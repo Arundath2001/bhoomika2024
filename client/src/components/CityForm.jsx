@@ -20,7 +20,7 @@ function CityForm({ mode, cityData, setIsFormOpen, setSelectedIds }) {
     useEffect(() => {
         if (mode === 'edit' && cityData) {
             setCityName(cityData.cityname || '');
-            const formattedImageUrl = `http://localhost:5000/${cityData.imageurl.replace(/\\/g, '/')}`;
+            const formattedImageUrl = `http://93.127.167.205:5000/${cityData.imageurl.replace(/\\/g, '/')}`;
             setExistingImages(formattedImageUrl ? [formattedImageUrl] : []);
        }
     }, [mode, cityData]);
@@ -65,12 +65,12 @@ function CityForm({ mode, cityData, setIsFormOpen, setSelectedIds }) {
     
         try {
             if (mode === 'edit' && cityData) {
-                await axios.put(`http://localhost:5000/cities/${cityData.id}`, formData, {
+                await axios.put(`http://93.127.167.205:5000/cities/${cityData.id}`, formData, {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
                 setAlertMessage({ isVisible: true, message: 'City updated successfully!', isError: false });
             } else {
-                await axios.post('http://localhost:5000/cities', formData, {
+                await axios.post('http://93.127.167.205:5000/cities', formData, {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
                 setAlertMessage({ isVisible: true, message: 'City added successfully!', isError: false });

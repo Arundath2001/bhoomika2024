@@ -18,7 +18,7 @@ function Schedules({ setSelectedIds, dataChanged, searchQuery }) {
     useEffect(() => {
         const fetchSchedules = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/schedules');
+                const response = await axios.get('http://93.127.167.205:5000/schedules');
                 setSchedules(response.data);
             } catch (error) {
                 console.error('Error fetching schedules:', error);

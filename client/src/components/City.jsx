@@ -9,7 +9,7 @@ function City({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelectedIds
     useEffect(() => {
         const fetchCities = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/cities');
+                const response = await axios.get('http://93.127.167.205:5000/cities');
                 console.log(response.data);
                 setData(response.data);
             } catch (error) {
@@ -76,7 +76,7 @@ function City({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelectedIds
                             <td>{item.cityname}</td>
                             <td>{item.availableproperties}</td>
                             <td>{new Date(item.updateddate).toLocaleDateString()}</td>
-                            <img src={`http://localhost:5000/${item.imageurl}`} alt="City" className="city-image" />
+                            <img src={`http://93.127.167.205:5000/${item.imageurl}`} alt="City" className="city-image" />
                             </tr>
                     ))}
                 </tbody>

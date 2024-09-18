@@ -25,7 +25,7 @@ const Contactform = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post('http://localhost:5000/sendEmail', formData);
+            const response = await axios.post('http://93.127.167.205:5000/sendEmail', formData);
             console.log('Email sent:', response.data);
             setLoading(false);
             Swal.fire({

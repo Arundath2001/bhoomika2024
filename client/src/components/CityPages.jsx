@@ -20,7 +20,7 @@ function CityPages() {
 
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/properties/city/${cityName}`)
+        axios.get(`http://93.127.167.205:5000/properties/city/${cityName}`)
             .then(response => {
                 setProperties(response.data);
                 setLoading(false);

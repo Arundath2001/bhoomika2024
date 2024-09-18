@@ -37,13 +37,13 @@ function Home() {
     }, [isPopupVisible1, isPopupVisible2]);
 
     const handleOpenPopup1 = () => {
-        setFormUrl('http://localhost:5000/selling-info'); 
+        setFormUrl('http://93.127.167.205:5000/selling-info'); 
         SetPopupVisible1(true);
         setHeading("Sell Your Property Fast: Get Started Here!");
     };
 
     const handleOpenPopup2 = () => {
-        setFormUrl('http://localhost:5000/enquiries'); 
+        setFormUrl('http://93.127.167.205:5000/enquiries'); 
         SetPopupVisible2(true);
         setHeading(
             <>

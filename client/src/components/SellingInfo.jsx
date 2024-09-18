@@ -9,7 +9,7 @@ function SellingInfo({ setSelectedIds, dataChanged, searchQuery }) {
     useEffect(() => {
         const fetchSellingInfo = async () => {
             try {
-                const response = await fetch('http://localhost:5000//selling-info');
+                const response = await fetch('http://93.127.167.205:5000//selling-info');
                 const data = await response.json();
                 setSellingInfo(data);
             } catch (error) {
@@ -124,7 +124,7 @@ function SellingInfo({ setSelectedIds, dataChanged, searchQuery }) {
                                                         {imageUrls.map((url, index) => (
                                                             <img
                                                                 key={index}
-                                                                src={`http://localhost:5000/${url}`}
+                                                                src={`http://93.127.167.205:5000/${url}`}
                                                                 alt={`Property ${index}`}
                                                                 className="table_image"
                                                             />

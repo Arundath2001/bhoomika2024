@@ -7,6 +7,8 @@ import DeletePopup from "./DeletePopup";
 import AlertMessage from "./AlertMessage"; 
 import LoadingScreen from "./LoadingScreen";
 import axios from 'axios';
+require('dotenv').config();
+
 
 function TopNavbar({ activeTab, setFormMode, setIsFormOpen, selectedIds, setSelectedIds, refreshData, onSearch }) {
     const [isDeletePopupVisible, setIsDeletePopupVisible] = useState(false);
@@ -32,19 +34,19 @@ function TopNavbar({ activeTab, setFormMode, setIsFormOpen, selectedIds, setSele
 
                 switch (activeTab) {
                     case "Enquiry":
-                        apiEndpoint = 'http://localhost:5000/enquiries/count'; 
+                        apiEndpoint = 'http://93.127.167.205:5000/enquiries/count'; 
                         break;
                     case "Selling Info":
-                        apiEndpoint = 'http://localhost:5000/selling-info/count'; 
+                        apiEndpoint = 'http://93.127.167.205:5000/selling-info/count'; 
                         break;
                     case "City":
-                        apiEndpoint = 'http://localhost:5000/cities/count'; 
+                        apiEndpoint = 'http://93.127.167.205:5000/cities/count'; 
                         break;
                     case "Property":
-                        apiEndpoint = 'http://localhost:5000/properties/count'; 
+                        apiEndpoint = 'http://93.127.167.205:5000/properties/count'; 
                         break;
                     case "Schedules":
-                        apiEndpoint = 'http://localhost:5000/schedules/count'; 
+                        apiEndpoint = 'http://93.127.167.205:5000/schedules/count'; 
                         break;
                     default:
                         throw new Error(`Unknown tab: ${activeTab}`);
@@ -98,19 +100,19 @@ function TopNavbar({ activeTab, setFormMode, setIsFormOpen, selectedIds, setSele
     
             switch (activeTab) {
                 case "City":
-                    apiEndpoint = 'http://localhost:5000/cities';
+                    apiEndpoint = 'http://93.127.167.205:5000/cities';
                     break;
                 case "Property":
-                    apiEndpoint = 'http://localhost:5000/properties';
+                    apiEndpoint = 'http://93.127.167.205:5000/properties';
                     break;
                 case "Selling Info":
-                    apiEndpoint = 'http://localhost:5000/selling-info';
+                    apiEndpoint = 'http://93.127.167.205:5000/selling-info';
                     break;
                 case "Schedules":
-                    apiEndpoint = 'http://localhost:5000/schedules';
+                    apiEndpoint = 'http://93.127.167.205:5000/schedules';
                     break;
                 case "Enquiry":
-                    apiEndpoint = 'http://localhost:5000/enquiry';
+                    apiEndpoint = 'http://93.127.167.205:5000/enquiry';
                     break;
                 default:
                     throw new Error(`Unknown tab: ${activeTab}`);
