@@ -7,8 +7,6 @@ import DeletePopup from "./DeletePopup";
 import AlertMessage from "./AlertMessage"; 
 import LoadingScreen from "./LoadingScreen";
 import axios from 'axios';
-require('dotenv').config();
-
 
 function TopNavbar({ activeTab, setFormMode, setIsFormOpen, selectedIds, setSelectedIds, refreshData, onSearch }) {
     const [isDeletePopupVisible, setIsDeletePopupVisible] = useState(false);
