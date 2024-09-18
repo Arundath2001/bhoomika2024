@@ -1,0 +1,55 @@
+.imagepreview {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.imagepreview_btn {
+    background: none;
+    border: none;
+    color: blue;
+    cursor: pointer;
+    font-size: 24px;
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
+}
+
+.imagepreview_images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.imagepreview_preview {
+    position: relative;
+    display: inline-block;
+}
+
+.imagepreview_preview img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+}
+
+.imagepreview_removebtn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+}
+
+.imagepreview_removebtn svg{
+    color: rgb(255, 54, 54);
+    width: 20px;
+    height: 20px;
+}

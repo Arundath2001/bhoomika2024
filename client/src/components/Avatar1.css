@@ -1,0 +1,41 @@
+.avatar1{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 20px 35px;
+    background-color: #FFFFFF;
+    border-radius: 50px;
+    box-shadow: 0px 10px 10px 0px #0000002D;
+    margin: 0 auto;
+    max-width: 250px;
+}
+
+.avatar1 img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.avatar1_text{
+    font-weight: 500;
+    font-size: 19px;
+    color: #2B2B2B;
+
+}
+
+@media only screen and (max-width: 600px) {
+
+    .avatar1{
+        max-width: 200px;
+        margin: 0 auto 20px;
+    }
+
+    .avatar1_text{
+        font-size: 12px;
+    }
+
+    .avatar1 img{
+        width: 50px;
+        height: 50px;
+    }
+}

@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap');
+
+.dashboard {
+    display: flex;
+    overflow: hidden;
+    font-family: "Kumbh Sans", sans-serif;
+}
+
+.dashboard_cont {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    overflow: hidden;
+}
+
+.dashboard h1{
+    font-size: 25px;
+}

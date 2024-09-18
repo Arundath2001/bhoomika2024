@@ -1,0 +1,72 @@
+.popupform2 {
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    max-width: 450px;
+    background: #FFFFFF;
+    margin-top: 70px;
+    max-height: 600px; 
+    overflow-y: auto; 
+    scrollbar-width: thin; 
+    scrollbar-color: #7F9884 #f1f1f1; 
+}
+
+.popupform2_fields {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 15px;
+}
+
+.popupform2_row1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.popupform2_row1 > * {
+    flex: 1;
+    width: 50%;
+}
+
+.popupform2 h6{
+    position: sticky;
+    top: -10px;
+    background: #FFFFFF;
+    padding: 10px;
+    z-index: 10;
+}
+
+.popupform2_btns{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    position: sticky;
+    bottom: -10px;
+    background: #FFFFFF;
+    padding: 10px;
+    z-index: 10;
+}
+
+.popupform2_rowmain {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.popupform2_row2 {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.popupform2_row2 > * {
+    flex: 1;
+    width: 50%;
+}
+
+@media only screen and (max-width: 600px) {
+    .popupform2 {
+        margin: 20px;
+    }
+}

@@ -1,0 +1,26 @@
+.iconbutton{
+    background: #7F9884;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    width: 150px;
+    justify-content: start;
+    padding: 11px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.iconbutton img{
+    width: 16px;
+    height: 16px;
+}
+
+.iconbutton_text{
+    font-size: 16px;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.iconbutton.selected{
+    background: #1A1A1A;
+}

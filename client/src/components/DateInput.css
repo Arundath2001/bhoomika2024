@@ -1,0 +1,25 @@
+.dateinput_date{
+    height: 20px;
+    outline: none;
+    border: 0.5px solid #000000;
+    border-radius: 3px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    max-width: 500px;
+}
+
+.dateinput_field{
+    display: flex;
+    align-items: center;
+}
+
+.dateinput_field img{
+    margin-left: -30px;
+    position: relative;
+}
+
+.dateinput label{
+    font-size: 14px;
+    font-weight: 500;
+}

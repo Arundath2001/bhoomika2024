@@ -1,0 +1,21 @@
+.selectnormal{
+    display: flex;
+    flex-direction: column;
+}
+
+.selectnormal label{
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.selectnormal select{
+    height: 40px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 500;
+    color: #979797;
+    outline: none;
+    border-radius: 3px;
+    border: 0.5px solid #1A1A1A;
+    padding: 10px;
+}

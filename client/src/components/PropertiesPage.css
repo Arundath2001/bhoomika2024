@@ -1,0 +1,68 @@
+.propertiespage{
+    background: url('../assets/bg.png') no-repeat center center fixed; 
+    background-size: cover; 
+    min-height: 100vh;
+  }
+
+.propertiespage_cont{
+    padding-top: 140px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .pagination button {
+    padding: 10px 15px;
+    margin: 0 5px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+    font-size: medium;
+  }
+  
+  .pagination svg{
+    width: 12px;
+  }
+
+  .pagination button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .pagination button.active {
+    border: 1px solid #57C9B4;
+    color: #57C9B4;
+    font-weight: bold;
+  }
+  
+  .pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .pagination button:nth-child(1), .pagination button:last-child {
+    background-color: #d3d3d3;
+  }
+  
+  .pagination button:nth-child(1):hover, .pagination button:last-child:hover {
+    background-color: #c0c0c0;
+  }
+  
+
+@media only screen and (max-width: 600px) {
+
+  .propertiespage_cont{
+    padding-top: 120px;
+  }
+
+  .propertiespage{
+    padding: 10px;
+  }
+  
+}

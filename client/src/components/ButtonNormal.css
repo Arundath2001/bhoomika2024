@@ -1,0 +1,27 @@
+.buttonnormal button{
+    width: 125px;
+    border-radius: 12px;
+    padding: 10px 15px;
+    outline: none;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn_white{
+    background: #FFFFFF;
+    color: #1A1A1A;
+    border: 1px solid #000000
+}
+
+.btn_black{
+    background: #000000;
+    color: #FFFFFF;
+    border: 1px solid #000000
+}
+
+.btn_red{
+    background: #FC3B3B;
+    color: #FFFFFF;
+    border: none;
+}

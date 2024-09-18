@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap');
+
+* {
+    margin: 0px;
+    font-family: "Roboto", sans-serif;
+    scroll-behavior: smooth;
+}
+
+.noscroll {
+    overflow: hidden;
+    width: 100%;
+}
+
+.dashboard {
+    font-family: "Kumbh Sans", sans-serif !important;
+}

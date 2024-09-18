@@ -1,0 +1,35 @@
+.sidenavbar {
+    background: #D2F1C8;
+    max-width: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 15px;
+    height: 100vh; 
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.sidenavbar_img {
+    width: 210px;
+    height: 150px;
+    border-radius: 12px;
+    overflow: hidden;
+    object-fit: cover;
+}
+
+.sidenavbar_btns {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    flex-grow: 1; 
+    justify-content: flex-start;
+}
+
+.sidenavbar_bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}

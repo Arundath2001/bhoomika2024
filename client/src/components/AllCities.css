@@ -1,0 +1,55 @@
+.allcities {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: 130px;
+}
+
+.allcities_cont {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.cities {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.cities_cont {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.allcities_cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+}
+
+@media (max-width: 1024px) {
+
+    .allcities{
+        padding-top: 80px;
+    }
+
+    .allcities_cards {
+        grid-template-columns: repeat(3, 1fr); 
+    }
+}
+
+@media (max-width: 768px) {
+    .allcities_cards {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+

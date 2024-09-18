@@ -1,0 +1,47 @@
+.contact{
+    margin: 0px 180px;
+    animation: fadeIn 1.2s forwards;
+    margin-top: 65px;
+    padding: 10px;
+  }
+  
+  .contact_data{
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+    border-radius: 10px;
+    padding: 20px;
+    background: #FFFFFF;
+  }
+
+  .contact h5{
+        font-size: 40px;
+        font-weight: 500;
+        margin-bottom: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .contact {
+        margin: 0;
+    }
+
+    .contact h5{
+      font-size: 20px;
+    }
+
+    .contact_data {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 1024px) {
+  .contact{
+    margin: 20px;
+  }
+
+  .contact_data {
+    gap: 20px;
+}
+}

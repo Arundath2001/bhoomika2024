@@ -1,0 +1,19 @@
+.topnavbar{
+    display: flex;
+    padding: 10px;
+    background: #D2F1C8;
+    border-radius: 4px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.topnavbar_fields{
+    display: flex;
+    gap: 25px;
+}
+
+.topnavbar_btns{
+    display: flex;
+    gap: 10px;
+}

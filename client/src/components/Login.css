@@ -1,0 +1,47 @@
+.login{
+    background: url("../assets/loginbg.png");
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login img{
+    width: 390px;
+    height: 142px;
+    object-fit: cover;
+}
+
+.login_data{
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.login_card{
+    padding: 15px;
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login_head{
+    font-size: 32px;
+    font-weight: 300;
+    margin-bottom: 15px;
+}
+
+.login_head span{
+    font-weight: 500;
+}
+
+.login_fields{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+    width: 100%;
+}

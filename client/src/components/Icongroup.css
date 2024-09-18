@@ -1,0 +1,14 @@
+.icongroup{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    
+    a:hover{
+      transform: scale(1.1);
+    }
+  }
+  
+  .icongroup a, .icongroup svg{
+    color: #666666;
+    font-size: 25px;
+  }

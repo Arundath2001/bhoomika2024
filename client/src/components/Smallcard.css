@@ -1,0 +1,163 @@
+.smallcard{
+    position: relative;
+    width: 390px;
+    height: 460px;
+    border-radius: 12px;
+    background: url("../assets/bgnew.jpg");
+    background-size: cover;
+  }
+
+.smallcard::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000cc;
+    border-radius: 12px; 
+  }
+
+.smallcard_mainpara, 
+.smallcard_down, 
+.smallcard_icons {
+    position: relative;
+    z-index: 2; 
+    color: #FFFFFF;
+}
+
+
+  .smallcard .smallcard_mainpara{
+    font-size: 18px;
+    color: #FFFFFF;
+    margin: 60px 0px;
+    padding: 0px 30px;
+  }
+  
+  .smallcard .smallcard_text{
+    gap: 25px;
+  }
+  
+  .smallcard_text p{
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  
+  .smallcard_down{
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    padding: 0px 30px;
+  }
+  
+  .smallcard_text a{
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  
+  .smallcard_icons{
+    display: none;
+    justify-content: center;
+    margin: 40px;
+  }
+
+  @media (max-width: 1024px) {
+    .smallcard{
+        width: 40%;
+        height: 100%;
+      }
+
+      .smallcard_circle1 {
+        width: 70px;
+        height: 70px;
+        bottom: 40px;
+        right: 40px;
+      }
+    
+      .smallcard_circle2 {
+      width: 140px;
+      height: 140px;
+      bottom: -40px;
+      right: -45px;
+      }
+    
+      .smallcard_icons{
+        display: flex;
+      }
+    
+      .smallcard_icons a, .smallcard_icons svg{
+        color: #FFFFFF;
+      }
+    
+      .smallcard 
+      .smallcard_mainpara{
+        margin-top: 40px;
+        margin-bottom: 10px;
+      }
+    
+      .smallcard_text{
+        flex-direction: column;
+      }
+    
+      .smallcard .smallcard_mainpara{
+        text-align: center;
+        font-size: 14px;
+      }
+}
+
+@media (max-width: 600px) {
+    .smallcard{
+        width: 100%;
+        height: 100%;
+      }
+
+      .smallcard_circle1 {
+        width: 70px;
+        height: 70px;
+        bottom: 25px;
+        right: 30px;
+      }
+    
+      .smallcard_circle2 {
+        bottom: -35px;
+        height: 110px;
+        right: -20px;
+        width: 110px;
+      }
+    
+      .smallcard_icons{
+        display: flex;
+      }
+    
+      .smallcard_icons a, .smallcard_icons svg{
+        color: #FFFFFF;
+      }
+    
+      .smallcard 
+      .smallcard_mainpara{
+        margin-top: 40px;
+        margin-bottom: 10px;
+      }
+    
+      .smallcard .smallcard_text{
+        flex-direction: column;
+        gap: 10px;
+      }
+    
+      .smallcard .smallcard_mainpara{
+        text-align: center;
+        font-size: 14px;
+        margin-bottom: 20px;
+      }
+    
+      .smallcard_text a{
+        font-size: 12px;
+      }
+    
+      .smallcard_text p{
+        font-size: 12px;
+      }
+}

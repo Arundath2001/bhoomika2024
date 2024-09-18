@@ -1,0 +1,17 @@
+.scrolldown svg{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    margin: 20px auto;
+    animation: blink 1.5s infinite;
+    cursor: pointer;
+}
+
+@keyframes blink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+}

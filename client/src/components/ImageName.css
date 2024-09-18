@@ -1,0 +1,29 @@
+.imagename{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 2px 16px;
+    background-color: #7F9884;
+    border-radius: 4px;
+    margin-top: 5px;
+    width: 150px;
+}
+
+.imagename img{
+    width: 40px;
+    height: 42px;
+    border-radius: 50%;
+}
+
+.imagename_name{
+    font-size: 14px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 5px;
+}
+
+.imagename_role{
+    font-size: 12px;
+    font-weight: 600;
+    color: #FFFFFF;
+}

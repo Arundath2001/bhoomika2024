@@ -1,0 +1,28 @@
+.iconpara{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  
+  .iconpara_text{
+    font-size: 12px;
+    font-weight: 500;
+    color: #A7A7A7;
+  
+    img{
+      width: 16px;
+      height: 13px;
+    }
+  }
+  @media (max-width: 1024px) {
+    .iconpara_text{
+        font-size: 10px;
+      }
+}
+
+
+@media (max-width: 768px) {
+    .iconpara_text{
+        font-size: 10px;
+      }   
+}

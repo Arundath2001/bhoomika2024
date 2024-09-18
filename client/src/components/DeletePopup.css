@@ -1,0 +1,22 @@
+.deletepopup{
+    display: inline-flex;
+    flex-direction: column;
+    padding: 15px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    border-radius: 12px;
+}
+
+.deletepopup_btns{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.deletepopup_head{
+    font-size: 20px;
+    font-weight: 300;
+    text-align: center;
+}

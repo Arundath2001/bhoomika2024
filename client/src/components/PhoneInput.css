@@ -1,0 +1,31 @@
+.phoneinput_field select{
+    color: #8A8A8A;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 3px 0px 0px 3px;
+    outline: none;
+    border: none;
+    border-right: 0.5px solid #1A1A1A;
+    background-color: white;
+}
+
+.phoneinput_field input{
+    padding: 10px;
+    outline: none;
+    border: none;
+    flex: 1;
+}
+
+.phoneinput_field{
+    display: flex;
+    align-items: center;
+    border: 0.5px solid #1A1A1A;
+    border-radius: 3px;
+    padding: 2px;
+}
+
+.phoneinput label{
+    font-size: 14px;
+    font-weight: 500;
+}

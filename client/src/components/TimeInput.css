@@ -1,0 +1,31 @@
+.timeinput label{
+    font-size: 15px;
+    font-weight: 500;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+.timeinput_field{
+    display: flex;
+    border: 0.5px solid #000000;
+    border-radius: 3px;
+    height: 36px;
+    padding: 2px;
+}
+
+.timeinput_field input{
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border: none;
+}
+
+.timeinput_field select{
+    padding: 10px;
+    outline: none;
+    border: none;
+    border-left: 0.5px solid #000000;
+}

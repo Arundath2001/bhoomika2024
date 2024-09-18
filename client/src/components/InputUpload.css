@@ -1,0 +1,31 @@
+.inputupload {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    justify-content: space-between;
+    max-width: 500px;
+}
+
+.inputupload label {
+    font-size: 14px;
+    margin-right: auto;
+    font-weight: 500;
+}
+
+.inputupload button {
+    font-size: 15px;
+    font-weight: 500;
+    color: #979797;
+    background-color: #FFFFFF;
+    border: 0.5px solid #000000;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.inputupload input {
+    display: none;
+}
+

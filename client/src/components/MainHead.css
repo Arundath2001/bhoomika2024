@@ -1,0 +1,36 @@
+.mainhead h4{
+    font-size: 36px;
+    font-weight: 500;
+    color: #1A1A1A;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.mainhead p{
+    font-size: 17px;
+    font-weight: 400;
+    color: #1A1A1A;
+    text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+    .mainhead h4{
+        font-size: 20px;
+        margin-bottom: 5px;
+        max-width: 240px;
+        margin: auto;
+    }
+
+    .mainhead p{
+        font-size: 14px;
+        max-width: 300px;
+        margin: auto;
+    }
+
+}
+
+@media (min-width: 600px) and (max-width: 1024px) {
+    .mainhead h4{
+        font-size: 20px;
+    }
+}

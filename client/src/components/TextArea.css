@@ -1,0 +1,19 @@
+.textarea{
+    display: flex;
+    flex-direction: column;
+}
+
+.textarea textarea{
+    height: 40px;
+    border: 0.5px solid #000000;
+    outline: none;
+    resize: none;
+    border-radius: 3px;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.textarea label{
+    font-size: 14px;
+    font-weight: 500;
+}

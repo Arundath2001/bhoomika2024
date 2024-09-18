@@ -1,0 +1,77 @@
+.propertyform {
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    max-width: 450px;
+    max-height: 600px; 
+    background: #FFFFFF;
+    margin-top: 50px;
+    overflow-y: auto; 
+    scrollbar-width: thin; 
+    scrollbar-color: #7F9884 #f1f1f1;
+    max-height: calc(100vh - 200px); 
+    overflow-x: hidden;
+}
+
+.propertyform_row3 {
+    display: flex;
+    gap: 10px;
+}
+
+.propertyform_row3 > * {
+    flex: 1 1 100%; 
+}
+
+.propertyform_fields {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+}
+
+
+.propertyform_row1, .propertyform_row2 {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.propertyform_row1 > *, .propertyform_row2 > * {
+    width: 50%;
+}
+
+.propertyform_btns {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.propertyform span {
+    font-weight: 300;
+}
+
+.propertyform_btns {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    position: sticky;
+    bottom: -10px;
+    background: #FFFFFF;
+    padding: 10px;
+    z-index: 10;
+}
+
+.propertyform h6{
+    position: sticky;
+    top: -10px;
+    background: #FFFFFF;
+    padding: 10px;
+    z-index: 10;
+}
+
+@media only screen and (max-width: 600px) {
+    .propertyform {
+        margin: 20px;
+    }
+}

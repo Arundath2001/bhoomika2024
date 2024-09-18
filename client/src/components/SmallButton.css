@@ -1,0 +1,23 @@
+.smallbutton{
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    background: #FFFFFF;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.smallbutton_red svg{
+    color: #FC3B3B;
+}
+
+.smallbutton_black svg{
+    color: #000000;
+}
+
+.smallbutton svg{
+    width: 20px;
+    height: 20px;
+    display: block;
+}
