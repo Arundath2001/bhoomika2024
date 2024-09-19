@@ -47,6 +47,7 @@ const PropertyCard = ({
     if (propertyType === 'Commercial') return 'Property for Sale';
     if (propertyType === 'Farm Land') return 'Farm Land for Sale';
     if (propertyType === 'Rental') return 'Rental Property';
+    if (propertyType === 'Industrial') return 'Industrial Property';
     return propertyname;
   };
 

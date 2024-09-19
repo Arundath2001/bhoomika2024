@@ -16,21 +16,30 @@ function Navbar({ scrollToContact }) {
     };
 
     const handleNavigationClick = (path) => {
+        const offset = 100; 
+    
         if (path === 'contact') {
-            navigate('/'); 
+            navigate('/');
             setTimeout(() => {
                 const contactSection = document.getElementById("contact");
                 if (contactSection) {
-                    contactSection.scrollIntoView({ behavior: "smooth" });
+                    const elementPosition = contactSection.getBoundingClientRect().top + window.scrollY;
+                    const offsetPosition = elementPosition - offset;
+    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
                 }
-            }, 100);      
+            }, 100);
         } else {
-            navigate(path);        
+            navigate(path);
             if (path === '/') {
-                window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
     };
+    
     
     
 
