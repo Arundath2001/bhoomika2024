@@ -20,7 +20,7 @@ function CityPages() {
 
 
     useEffect(() => {
-        axios.get(`https://api.bhoomikarealestate.com/properties/city/${cityName}`)
+        axios.get(`http://localhost:5000/properties/city/${cityName}`)
             .then(response => {
                 setProperties(response.data);
                 setLoading(false);

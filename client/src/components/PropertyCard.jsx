@@ -76,7 +76,7 @@ const PropertyCard = ({
     <div className='propertycard'>
       <div className='propertycard_cont'>
         <div className='propertycard_top'>
-          <img className='propertycard_img' src={`https://api.bhoomikarealestate.com/${imageurl}`} alt={propertyname} />
+          <img className='propertycard_img' src={`http://localhost:5000/${imageurl}`} alt={propertyname} />
           <div className='propertycard_topdata'>
             <div className={`propertycard_data1 ${propertyType}`}>{propertyType}</div>
             <div className='propertycard_data2'>

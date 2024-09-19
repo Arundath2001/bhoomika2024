@@ -32,19 +32,19 @@ function TopNavbar({ activeTab, setFormMode, setIsFormOpen, selectedIds, setSele
 
                 switch (activeTab) {
                     case "Enquiry":
-                        apiEndpoint = 'https://api.bhoomikarealestate.com/enquiries/count'; 
+                        apiEndpoint = 'http://localhost:5000/enquiries/count'; 
                         break;
                     case "Selling Info":
-                        apiEndpoint = 'https://api.bhoomikarealestate.com/selling-info/count'; 
+                        apiEndpoint = 'http://localhost:5000/selling-info/count'; 
                         break;
                     case "City":
-                        apiEndpoint = 'https://api.bhoomikarealestate.com/cities/count'; 
+                        apiEndpoint = 'http://localhost:5000/cities/count'; 
                         break;
                     case "Property":
-                        apiEndpoint = 'https://api.bhoomikarealestate.com/properties/count'; 
+                        apiEndpoint = 'http://localhost:5000/properties/count'; 
                         break;
                     case "Schedules":
-                        apiEndpoint = 'https://api.bhoomikarealestate.com/schedules/count'; 
+                        apiEndpoint = 'http://localhost:5000/schedules/count'; 
                         break;
                     default:
                         throw new Error(`Unknown tab: ${activeTab}`);
@@ -98,19 +98,19 @@ function TopNavbar({ activeTab, setFormMode, setIsFormOpen, selectedIds, setSele
     
             switch (activeTab) {
                 case "City":
-                    apiEndpoint = 'https://api.bhoomikarealestate.com/cities';
+                    apiEndpoint = 'http://localhost:5000/cities';
                     break;
                 case "Property":
-                    apiEndpoint = 'https://api.bhoomikarealestate.com/properties';
+                    apiEndpoint = 'http://localhost:5000/properties';
                     break;
                 case "Selling Info":
-                    apiEndpoint = 'https://api.bhoomikarealestate.com/selling-info';
+                    apiEndpoint = 'http://localhost:5000/selling-info';
                     break;
                 case "Schedules":
-                    apiEndpoint = 'https://api.bhoomikarealestate.com/schedules';
+                    apiEndpoint = 'http://localhost:5000/schedules';
                     break;
                 case "Enquiry":
-                    apiEndpoint = 'https://api.bhoomikarealestate.com/enquiry';
+                    apiEndpoint = 'http://localhost:5000/enquiry';
                     break;
                 default:
                     throw new Error(`Unknown tab: ${activeTab}`);

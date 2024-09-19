@@ -9,7 +9,7 @@ function SellingInfo({ setSelectedIds, dataChanged, searchQuery }) {
     useEffect(() => {
         const fetchSellingInfo = async () => {
             try {
-                const response = await fetch('https://api.bhoomikarealestate.com//selling-info');
+                const response = await fetch('http://localhost:5000/selling-info');
                 const data = await response.json();
                 setSellingInfo(data);
             } catch (error) {
@@ -61,9 +61,20 @@ function SellingInfo({ setSelectedIds, dataChanged, searchQuery }) {
 
     const downloadAllImages = (urls) => {
         urls.forEach(url => {
-            saveAs(url, url.split('/').pop());
+            const normalizedUrl = url.replace(/\\/g, '/');
+            const downloadUrl = `http://localhost:5000/${normalizedUrl}`;
+        
+            fetch(downloadUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                    const pngBlob = new Blob([blob], { type: 'image/png' });
+                    saveAs(pngBlob, normalizedUrl.split('/').pop());
+                })
+                .catch(error => console.error('Error downloading image:', error));
         });
     };
+    
+    
 
     return (
         <div className="sellinginfo">
@@ -124,7 +135,7 @@ function SellingInfo({ setSelectedIds, dataChanged, searchQuery }) {
                                                         {imageUrls.map((url, index) => (
                                                             <img
                                                                 key={index}
-                                                                src={`https://api.bhoomikarealestate.com/${url}`}
+                                                                src={`http://localhost:5000/${url}`}
                                                                 alt={`Property ${index}`}
                                                                 className="table_image"
                                                             />

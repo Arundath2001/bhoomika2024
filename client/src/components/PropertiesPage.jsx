@@ -17,7 +17,7 @@ function PropertiesPage() {
   const [propertiesPerPage, setPropertiesPerPage] = useState(9);
 
   useEffect(() => {
-    axios.get('https://api.bhoomikarealestate.com/properties')
+    axios.get('http://localhost:5000/properties')
       .then(response => {
         setProperties(response.data);
         setLoading(false);

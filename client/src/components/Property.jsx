@@ -12,7 +12,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
 
     const fetchProperties = async () => {
         try {
-            const response = await axios.get('https://api.bhoomikarealestate.com/properties');
+            const response = await axios.get('http://localhost:5000/properties');
             console.log("Fetched properties:", response.data);
             setProperties(response.data);
         } catch (error) {
@@ -21,30 +21,38 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
     };
 
     const handleFormSubmit = async (propertyDetails) => {
+        console.log("Form submitted with data:", propertyDetails); // Log the details for debugging
+    
         if (formMode === "edit") {
+            if (!propertyDetails.id) {
+                console.error("Property ID is missing for update");
+                return;
+            }
             try {
-                await axios.put(`https://api.bhoomikarealestate.com/properties/${propertyDetails.id}`, propertyDetails);
+                await axios.put(`http://localhost:5000/properties/${propertyDetails.id}`, propertyDetails);
                 setProperties((prevProperties) =>
                     prevProperties.map((prop) =>
                         prop.id === propertyDetails.id ? propertyDetails : prop
                     )
                 );
+                console.log("Property updated and city counts recalculated");
             } catch (error) {
                 console.error("Error updating property", error);
             }
         } else {
             try {
-                const response = await axios.post('https://api.bhoomikarealestate.com/properties', propertyDetails);
+                const response = await axios.post('http://localhost:5000/properties', propertyDetails);
                 setProperties((prevProperties) => [...prevProperties, response.data]);
+                console.log("Property added");
             } catch (error) {
                 console.error("Error adding property", error);
             }
         }
-        
+    
         setIsFormOpen(false);
-            
         fetchProperties();
     };
+    
     
     const handleCheckboxChange = (id) => {
         setSelectedIds((prevSelectedIds) =>
@@ -76,7 +84,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
                         propertyData={selectedProperty} 
                         onSubmit={handleFormSubmit} 
                         setSelectedIds={setSelectedIds} 
-                        submitUrl="https://api.bhoomikarealestate.com/properties"
+                        submitUrl="http://localhost:5000/properties"
                         showImageUpload={true}
                         span="Add"
                         heading="a New Property"
@@ -137,7 +145,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
                                         <td className="table_images">
                                             {property.imageurls && property.imageurls.length > 0 ? (
                                                 property.imageurls.map((url, index) => (
-                                                    <img src={`https://api.bhoomikarealestate.com/${url}`} alt="City" className="city-image" />
+                                                    <img src={`http://localhost:5000/${url}`} alt="City" className="city-image" />
                                                 ))
                                             ) : (
                                                 'No images'

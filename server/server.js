@@ -10,16 +10,12 @@ const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173' }));
+app.use('/uploads', express.static('uploads'));app.use(cors());
 app.use(express.json());
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASS,
-  port: process.env.DB_PORT,
+connectionString : "postgresql://bhoomika_owner:prmILDO82SFu@ep-wild-night-a15rhib2.ap-southeast-1.aws.neon.tech/bhoomika?sslmode=require"
 });
 
 const storage = multer.diskStorage({
@@ -113,6 +109,9 @@ app.put('/cities/:id', upload.single('file'), async (req, res) => {
   const { id } = req.params;
   const { cityName } = req.body; 
   const file = req.file;
+  
+  console.log(req.body);
+  
 
   try {
     const countResult = await pool.query(
@@ -233,35 +232,58 @@ app.post('/properties', propertyUpload.array('files', 6), async (req, res) => {
     rentalType || null,
   ];
 
+  const client = await pool.connect();
+
   try {
-    await pool.query(
+    await client.query('BEGIN');
+
+    await client.query(
       `INSERT INTO properties (propertyType, fullName, phoneNumber, propertyName, numOfRooms, numOfToilets, locationDetails, plotSize, budget, description, imageUrls, numOfBedRooms, commercialType, rentalType)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
       values
     );
 
-    const countResult = await pool.query(
-      `SELECT COUNT(*) FROM properties 
-       WHERE locationDetails ILIKE $1
-       OR description ILIKE $1`,
-      [`%${locationDetails}%`]
-    );
+    const citiesFromLocation = locationDetails.split(',').map(city => city.trim());
+    const citiesFromDescription = description ? description.split(/,\s*/).map(city => city.trim()) : [];
 
-    const availableProperties = parseInt(countResult.rows[0].count, 10);
+    const allCities = Array.from(new Set([...citiesFromLocation, ...citiesFromDescription]));
+    console.log(`Cities array: ${allCities}`);
 
-    await pool.query(
-      'UPDATE cities SET availableProperties = $1 WHERE cityName = $2',
-      [availableProperties, locationDetails]
-    );
+    const updatePromises = allCities.map(async city => {
+      const countResult = await client.query(
+        `SELECT COUNT(*) FROM properties 
+         WHERE locationDetails ILIKE $1
+         OR description ILIKE $1`,
+        [`%${city}%`]
+      );
 
-    res.status(201).send('Property added and city updated');
+      const availableProperties = parseInt(countResult.rows[0].count, 10);
+      console.log(`City: ${city}, Count: ${availableProperties}`);
+
+      const updateResult = await client.query(
+        'UPDATE cities SET availableProperties = $1 WHERE TRIM(LOWER(cityName)) = TRIM(LOWER($2)) RETURNING *',
+        [availableProperties, city]
+      );
+
+      if (updateResult.rowCount === 0) {
+        console.log(`City not found for update: ${city}`);
+      } else {
+        console.log(`City updated: ${city}`);
+      }
+    });
+
+    await Promise.all(updatePromises);
+
+    await client.query('COMMIT');
+    res.status(201).send('Property added and city counts updated');
   } catch (err) {
+    await client.query('ROLLBACK');
     console.error(err);
     res.status(500).send('Server error');
+  } finally {
+    client.release();
   }
 });
-
-
 
 
 app.put('/properties/:id', propertyUpload.array('files', 6), async (req, res) => {
@@ -269,62 +291,86 @@ app.put('/properties/:id', propertyUpload.array('files', 6), async (req, res) =>
   const {
     propertyType, fullName, phoneNumber, propertyName,
     numOfRooms, numOfToilets, locationDetails, plotSize,
-    budget, rentalType, commercialType, numOfBedRooms
+    budget, rentalType, commercialType, numOfBedRooms, description
   } = req.body;
   const files = req.files;
 
+  const client = await pool.connect();
+
   try {
+    await client.query('BEGIN');
+
     let updateQuery = `UPDATE properties 
       SET propertyType = $1, fullName = $2, phoneNumber = $3, propertyName = $4, 
       numOfRooms = $5, numOfToilets = $6, locationDetails = $7, plotSize = $8, 
-      budget = $9, numOfBedRooms = $10, rentalType = $11, commercialType = $12`;
+      budget = $9, description = $10, numOfBedRooms = $11, rentalType = $12, commercialType = $13`;
 
     const values = [
       propertyType || null,
       fullName || null,
       phoneNumber || null,
       propertyName || null,
-      parseInt(numOfRooms, 10) || null,
-      parseInt(numOfToilets, 10) || null,
+      numOfRooms ? parseInt(numOfRooms, 10) : null,
+      numOfToilets ? parseInt(numOfToilets, 10) : null,
       locationDetails || null,
       plotSize || null,
       budget || null,
-      parseInt(numOfBedRooms, 10) || null,
+      description || null,  
+      numOfBedRooms ? parseInt(numOfBedRooms, 10) : null,
       rentalType || null,
       commercialType || null
     ];
 
     if (files && files.length > 0) {
       const imageUrls = files.map(file => path.join('uploads', 'properties', file.filename));
-      updateQuery += ', imageUrls = $13';
+      updateQuery += ', imageUrls = $14';
       values.push(JSON.stringify(imageUrls));
     }
 
-    updateQuery += ' WHERE id = $' + (files && files.length > 0 ? '14' : '13');
+    updateQuery += ' WHERE id = $' + (files && files.length > 0 ? '15' : '14');
     values.push(id);
 
-    await pool.query(updateQuery, values);
+    console.log('Update query:', updateQuery);
+    console.log('Final values array:', values);
 
-    const countResult = await pool.query(
-      `SELECT COUNT(*) FROM properties 
-       WHERE locationDetails ILIKE $1
-       OR description ILIKE $1`,
-      [`%${locationDetails}%`]
-    );
+    await client.query(updateQuery, values);
 
-    const availableProperties = parseInt(countResult.rows[0].count, 10);
+    const citiesFromLocation = locationDetails ? locationDetails.split(',').map(city => city.trim()) : [];
+    const citiesFromDescription = description ? description.split(/,\s*/).map(city => city.trim()) : [];
+    const allCities = Array.from(new Set([...citiesFromLocation, ...citiesFromDescription]));
 
-    await pool.query(
-      'UPDATE cities SET availableProperties = $1 WHERE cityName = $2',
-      [availableProperties, locationDetails]
-    );
+    console.log(`Cities array: ${allCities}`);
 
-    res.send('Property updated and city count recalculated');
+    const updatePromises = allCities.map(async city => {
+      const countResult = await client.query(
+        `SELECT COUNT(*) FROM properties 
+         WHERE locationDetails ILIKE $1
+         OR description ILIKE $1`,
+        [`%${city}%`]
+      );
+
+      const availableProperties = parseInt(countResult.rows[0].count, 10);
+      console.log(`City: ${city}, Count: ${availableProperties}`);
+
+      await client.query(
+        'UPDATE cities SET availableProperties = $1 WHERE TRIM(LOWER(cityName)) = TRIM(LOWER($2))',
+        [availableProperties, city]
+      );
+    });
+
+    await Promise.all(updatePromises);
+
+    await client.query('COMMIT');
+    res.send('Property updated and city counts recalculated');
   } catch (err) {
-    console.error(err);
+    await client.query('ROLLBACK');
+    console.error('Error during update:', err);
     res.status(500).send('Server error');
+  } finally {
+    client.release();
   }
 });
+
 
 
 
@@ -365,8 +411,12 @@ app.delete('/properties', async (req, res) => {
     return res.status(400).json({ message: 'No IDs provided' });
   }
 
+  const client = await pool.connect();
+
   try {
-    const properties = await pool.query('SELECT imageurls FROM properties WHERE id = ANY($1::int[])', [ids]);
+    await client.query('BEGIN');
+
+    const properties = await client.query('SELECT imageurls, locationDetails, description FROM properties WHERE id = ANY($1::int[])', [ids]);
 
     for (const property of properties.rows) {
       const imageUrlsStr = property.imageurls; 
@@ -376,44 +426,80 @@ app.delete('/properties', async (req, res) => {
         continue; 
       }
 
-      if (Array.isArray(imageUrlsStr)) {
-        console.log('Fetched imageUrls:', imageUrlsStr);
+      let imageUrls;
+      try {
+        imageUrls = JSON.parse(imageUrlsStr); 
+      } catch (err) {
+        console.error('Error parsing imageUrls:', err);
+        imageUrls = [];
+      }
 
-        for (const imageUrl of imageUrlsStr) {
-          if (imageUrl) {
-            const normalizedImageUrl = imageUrl.replace(/\\/g, '/');
-            const fileName = path.basename(normalizedImageUrl);
-            const filePath = path.join(__dirname, 'uploads', 'properties', fileName);
+      console.log('Fetched imageUrls:', imageUrls);
 
-            console.log('Attempting to delete file at path:', filePath);
+      for (const imageUrl of imageUrls) {
+        if (imageUrl) {
+          const normalizedImageUrl = imageUrl.replace(/\\/g, '/');
+          const fileName = path.basename(normalizedImageUrl);
+          const filePath = path.join(__dirname, 'uploads', 'properties', fileName);
 
-            try {
-              if (fs.existsSync(filePath)) {
-                fs.unlinkSync(filePath);
-                console.log('File deleted:', filePath);
-              } else {
-                console.warn('Image file not found at path:', filePath);
-              }
-            } catch (fsError) {
-              console.error('Error deleting file:', fsError);
+          console.log('Attempting to delete file at path:', filePath);
+
+          try {
+            if (fs.existsSync(filePath)) {
+              fs.unlinkSync(filePath);
+              console.log('File deleted:', filePath);
+            } else {
+              console.warn('Image file not found at path:', filePath);
             }
-          } else {
-            console.warn('Empty image URL found for property:', property);
+          } catch (fsError) {
+            console.error('Error deleting file:', fsError);
           }
+        } else {
+          console.warn('Empty image URL found for property:', property);
         }
-      } else {
-        console.warn('ImageUrls is not an array:', imageUrlsStr);
       }
     }
 
-    await pool.query('DELETE FROM properties WHERE id = ANY($1::int[])', [ids]);
+    await client.query('DELETE FROM properties WHERE id = ANY($1::int[])', [ids]);
 
-    res.send('Properties deleted');
+    const citiesFromProperties = properties.rows.flatMap(property => {
+      const citiesFromLocation = property.locationdetails ? property.locationdetails.split(',').map(city => city.trim()) : [];
+      const citiesFromDescription = property.description ? property.description.split(/,\s*/).map(city => city.trim()) : [];
+      return Array.from(new Set([...citiesFromLocation, ...citiesFromDescription]));
+    });
+
+    console.log(`Cities array for recalculation: ${citiesFromProperties}`);
+
+    const updatePromises = citiesFromProperties.map(async city => {
+      const countResult = await client.query(
+        `SELECT COUNT(*) FROM properties 
+         WHERE locationDetails ILIKE $1
+         OR description ILIKE $1`,
+        [`%${city}%`]
+      );
+
+      const availableProperties = parseInt(countResult.rows[0].count, 10);
+      console.log(`City: ${city}, Count: ${availableProperties}`);
+
+      await client.query(
+        'UPDATE cities SET availableProperties = $1 WHERE TRIM(LOWER(cityName)) = TRIM(LOWER($2))',
+        [availableProperties, city]
+      );
+    });
+
+    await Promise.all(updatePromises);
+
+    await client.query('COMMIT');
+    res.send('Properties deleted and city counts recalculated');
   } catch (err) {
+    await client.query('ROLLBACK');
     console.error('Server error:', err);
     res.status(500).send('Server error');
+  } finally {
+    client.release();
   }
 });
+
 
 app.post('/enquiries',propertyUpload.array('files', 6), async (req, res) => {
   console.log('Request Body:', req.body);

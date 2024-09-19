@@ -73,7 +73,10 @@ function PropertyForm({
       setBudget({ input: budgetInput || "", unit: budgetUnit || "Lakhs" });
       setDescription(propertyData.description || "");
 
-      setExistingImages(propertyData.imageurls || []);
+      const formattedImageUrls = propertyData.imageurls.map((url) => 
+        url.startsWith("blob:") ? url : `http://localhost:5000/${url.replace(/\\/g, '/')}`
+    );
+    setExistingImages(formattedImageUrls);
     }
   }, [mode, propertyData]);
 
@@ -81,51 +84,53 @@ function PropertyForm({
     const selectedFiles = Array.from(e.target.files);
 
     if (files.length + selectedFiles.length > 6) {
-      setAlertMessage({
-        isVisible: true,
-        message: "You can only upload up to 6 images.",
-        isError: true,
-      });
-      return;
+        setAlertMessage({
+            isVisible: true,
+            message: "You can only upload up to 6 images.",
+            isError: true,
+        });
+        return;
     }
 
     const compressedFilesPromises = selectedFiles.map(async (file) => {
-      const options = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 800,
-        useWebWorker: true,
-      };
+        const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 800,
+            useWebWorker: true,
+        };
 
-      try {
-        const compressedFile = await imageCompression(file, options);
-        return compressedFile;
-      } catch (error) {
-        console.error("Error compressing file", error);
-        return file;
-      }
+        try {
+            const compressedFile = await imageCompression(file, options);
+            const blob = new Blob([compressedFile], { type: 'image/png' });
+            return blob;
+        } catch (error) {
+            console.error("Error compressing file", error);
+            return file;
+        }
     });
 
     const compressedFiles = await Promise.all(compressedFilesPromises);
 
     setFiles((prevFiles) => [...prevFiles, ...compressedFiles]);
 
-    const newPreviews = compressedFiles.map((file) =>
-      URL.createObjectURL(file)
-    );
+    const newPreviews = compressedFiles.map((file) => URL.createObjectURL(file));
     setPreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
-  };
+};
 
-  const handleRemoveImage = (index, isNew = true) => {
-    if (isNew) {
-      const updatedFiles = files.filter((_, i) => i !== index);
-      const updatedPreviews = previews.filter((_, i) => i !== index);
-      setFiles(updatedFiles);
-      setPreviews(updatedPreviews);
-    } else {
-      const updatedImages = existingImages.filter((_, i) => i !== index);
-      setExistingImages(updatedImages);
-    }
-  };
+
+
+
+const handleRemoveImage = (index, isNew = true) => {
+  if (isNew) {
+    const updatedFiles = files.filter((_, i) => i !== index);
+    const updatedPreviews = previews.filter((_, i) => i !== index);
+    setFiles(updatedFiles);
+    setPreviews(updatedPreviews);
+  } else {
+    const updatedImages = existingImages.filter((_, i) => i !== index);
+    setExistingImages(updatedImages);
+  }
+};
 
   const handleCloseForm = () => {
     setIsFormOpen(false);
@@ -230,7 +235,6 @@ function PropertyForm({
       }, 2000);
     } catch (error) {
       console.error("Error submitting form", error);
-      // setAlertText("Failed to submit form. Please try again.");
       setAlertMessage({
         isVisible: true,
         message: "Failed to submit form. Please try again.",
@@ -410,9 +414,15 @@ function PropertyForm({
             />
 
             <ImagePreview
-              previews={[...previews, ...existingImages]}
-              onRemove={handleRemoveImage}
+            previews={previews}
+            onRemove={(index) => handleRemoveImage(index, true)}
             />
+            <ImagePreview
+                previews={existingImages}
+                onRemove={(index) => handleRemoveImage(index, false)}
+            />
+
+            
           </>
         )}
 
