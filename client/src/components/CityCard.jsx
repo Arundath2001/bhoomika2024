@@ -11,7 +11,7 @@ function CityCard({ city }) {
 
     return (
         <div className="citycard" onClick={handleClick}>
-            <img src={`http://93.127.167.205:5000/${city.imageurl}`} alt={city.cityname} />
+            <img src={`https://api.bhoomikarealestate.com/${city.imageurl}`} alt={city.cityname} />
             <div className="citycard_details">
                 <h5>{city.cityname}</h5>
                 <p>{city.availableproperties} Properties</p>

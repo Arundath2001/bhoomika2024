@@ -37,13 +37,13 @@ function Home() {
     }, [isPopupVisible1, isPopupVisible2]);
 
     const handleOpenPopup1 = () => {
-        setFormUrl('http://93.127.167.205:5000/selling-info'); 
+        setFormUrl('https://api.bhoomikarealestate.com/selling-info'); 
         SetPopupVisible1(true);
         setHeading("Sell Your Property Fast: Get Started Here!");
     };
 
     const handleOpenPopup2 = () => {
-        setFormUrl('http://93.127.167.205:5000/enquiries'); 
+        setFormUrl('https://api.bhoomikarealestate.com/enquiries'); 
         SetPopupVisible2(true);
         setHeading(
             <>

@@ -52,7 +52,7 @@ function PopupForm1({ onClose }) {
         const budget = `${formData.budget.input} ${formData.budget.unit}`;
 
         try {
-            await axios.post('http://93.127.167.205:5000/enquiries', {
+            await axios.post('https://api.bhoomikarealestate.com/enquiries', {
                 ...formData,
                 plotSize,
                 budget

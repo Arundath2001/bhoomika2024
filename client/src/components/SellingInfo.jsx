@@ -9,7 +9,7 @@ function SellingInfo({ setSelectedIds, dataChanged, searchQuery }) {
     useEffect(() => {
         const fetchSellingInfo = async () => {
             try {
-                const response = await fetch('http://93.127.167.205:5000//selling-info');
+                const response = await fetch('https://api.bhoomikarealestate.com//selling-info');
                 const data = await response.json();
                 setSellingInfo(data);
             } catch (error) {
@@ -124,7 +124,7 @@ function SellingInfo({ setSelectedIds, dataChanged, searchQuery }) {
                                                         {imageUrls.map((url, index) => (
                                                             <img
                                                                 key={index}
-                                                                src={`http://93.127.167.205:5000/${url}`}
+                                                                src={`https://api.bhoomikarealestate.com/${url}`}
                                                                 alt={`Property ${index}`}
                                                                 className="table_image"
                                                             />

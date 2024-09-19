@@ -13,7 +13,7 @@ function Cities() {
     useEffect(() => {
         const fetchCities = async () => {
             try {
-                const response = await fetch('http://93.127.167.205:5000/cities');
+                const response = await fetch('https://api.bhoomikarealestate.com/cities');
                 if (response.ok) {
                     const data = await response.json();
                     setCities(data);

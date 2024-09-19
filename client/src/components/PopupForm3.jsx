@@ -29,7 +29,7 @@ function PopupForm3({ onClose, propertyDetails }) {
         setLoading(true);
 
         try {
-            await axios.post('http://93.127.167.205:5000/schedule-visit', {
+            await axios.post('https://api.bhoomikarealestate.com/schedule-visit', {
                 fullName,
                 email,
                 phoneNumber,
