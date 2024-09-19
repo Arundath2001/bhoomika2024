@@ -25,7 +25,7 @@ function BlackCard(){
                     <PropertyForm 
                         mode="add"
                         setIsFormOpen={handleClosePopup} 
-                        submitUrl="http://localhost:5000/selling-info" 
+                        submitUrl="https://api.bhoomikarealestate.com/selling-info" 
                         setSelectedIds={() => {}}
                         showImageUpload={isPopupVisible}
                         showPropertyName={isPopupVisible}

@@ -4,7 +4,7 @@ import './ImagePopup.css';
 const ImagePopup = ({ images, currentImageIndex, onClose, onPrevious, onNext }) => {
   if (!images || images.length === 0) return null;
 
-  const baseURL = 'http://localhost:5000/';
+  const baseURL = 'https://api.bhoomikarealestate.com/';
 
   return (
     <div className="imagepopup">

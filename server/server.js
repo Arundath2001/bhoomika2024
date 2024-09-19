@@ -10,12 +10,16 @@ const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: 'https://www.bhoomikarealestate.com' }));
 app.use('/uploads', express.static('uploads'));app.use(cors());
 app.use(express.json());
 
 const pool = new Pool({
-connectionString : "postgresql://bhoomika_owner:prmILDO82SFu@ep-wild-night-a15rhib2.ap-southeast-1.aws.neon.tech/bhoomika?sslmode=require"
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASS,
+  port: process.env.DB_PORT,
 });
 
 const storage = multer.diskStorage({

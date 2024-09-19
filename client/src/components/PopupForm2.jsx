@@ -106,7 +106,7 @@ function PopupForm2({ onClose }) {
         });
 
         try {
-            const response = await axios.post('http://localhost:5000/selling-info', formData, {
+            const response = await axios.post('https://api.bhoomikarealestate.com/selling-info', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

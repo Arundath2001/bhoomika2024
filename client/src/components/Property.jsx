@@ -12,7 +12,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
 
     const fetchProperties = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/properties');
+            const response = await axios.get('https://api.bhoomikarealestate.com/properties');
             console.log("Fetched properties:", response.data);
             setProperties(response.data);
         } catch (error) {
@@ -29,7 +29,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
                 return;
             }
             try {
-                await axios.put(`http://localhost:5000/properties/${propertyDetails.id}`, propertyDetails);
+                await axios.put(`https://api.bhoomikarealestate.com/properties/${propertyDetails.id}`, propertyDetails);
                 setProperties((prevProperties) =>
                     prevProperties.map((prop) =>
                         prop.id === propertyDetails.id ? propertyDetails : prop
@@ -41,7 +41,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
             }
         } else {
             try {
-                const response = await axios.post('http://localhost:5000/properties', propertyDetails);
+                const response = await axios.post('https://api.bhoomikarealestate.com/properties', propertyDetails);
                 setProperties((prevProperties) => [...prevProperties, response.data]);
                 console.log("Property added");
             } catch (error) {
@@ -84,7 +84,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
                         propertyData={selectedProperty} 
                         onSubmit={handleFormSubmit} 
                         setSelectedIds={setSelectedIds} 
-                        submitUrl="http://localhost:5000/properties"
+                        submitUrl="https://api.bhoomikarealestate.com/properties"
                         showImageUpload={true}
                         span="Add"
                         heading="a New Property"
@@ -145,7 +145,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
                                         <td className="table_images">
                                             {property.imageurls && property.imageurls.length > 0 ? (
                                                 property.imageurls.map((url, index) => (
-                                                    <img src={`http://localhost:5000/${url}`} alt="City" className="city-image" />
+                                                    <img src={`https://api.bhoomikarealestate.com/${url}`} alt="City" className="city-image" />
                                                 ))
                                             ) : (
                                                 'No images'

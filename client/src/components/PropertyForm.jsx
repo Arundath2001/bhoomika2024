@@ -74,7 +74,7 @@ function PropertyForm({
       setDescription(propertyData.description || "");
 
       const formattedImageUrls = propertyData.imageurls.map((url) => 
-        url.startsWith("blob:") ? url : `http://localhost:5000/${url.replace(/\\/g, '/')}`
+        url.startsWith("blob:") ? url : `https://api.bhoomikarealestate.com/${url.replace(/\\/g, '/')}`
     );
     setExistingImages(formattedImageUrls);
     }

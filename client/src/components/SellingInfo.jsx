@@ -9,7 +9,7 @@ function SellingInfo({ setSelectedIds, dataChanged, searchQuery }) {
     useEffect(() => {
         const fetchSellingInfo = async () => {
             try {
-                const response = await fetch('http://localhost:5000/selling-info');
+                const response = await fetch('https://api.bhoomikarealestate.com/selling-info');
                 const data = await response.json();
                 setSellingInfo(data);
             } catch (error) {
@@ -62,7 +62,7 @@ function SellingInfo({ setSelectedIds, dataChanged, searchQuery }) {
     const downloadAllImages = (urls) => {
         urls.forEach(url => {
             const normalizedUrl = url.replace(/\\/g, '/');
-            const downloadUrl = `http://localhost:5000/${normalizedUrl}`;
+            const downloadUrl = `https://api.bhoomikarealestate.com/${normalizedUrl}`;
         
             fetch(downloadUrl)
                 .then(response => response.blob())
@@ -135,7 +135,7 @@ function SellingInfo({ setSelectedIds, dataChanged, searchQuery }) {
                                                         {imageUrls.map((url, index) => (
                                                             <img
                                                                 key={index}
-                                                                src={`http://localhost:5000/${url}`}
+                                                                src={`https://api.bhoomikarealestate.com/${url}`}
                                                                 alt={`Property ${index}`}
                                                                 className="table_image"
                                                             />

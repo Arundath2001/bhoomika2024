@@ -16,7 +16,7 @@ function Properties() {
   const [selectedType, setSelectedType] = useState("All Properties");
 
   useEffect(() => {
-    axios.get('http://localhost:5000/properties')
+    axios.get('https://api.bhoomikarealestate.com/properties')
       .then(response => {
         setProperties(response.data);
         setLoading(false);

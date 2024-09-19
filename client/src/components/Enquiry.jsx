@@ -20,7 +20,7 @@ function Enquiry({ setSelectedIds, dataChanged, searchQuery }) {
     useEffect(() => {
         const fetchEnquiries = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/enquiries');
+                const response = await axios.get('https://api.bhoomikarealestate.com/enquiries');
                 console.log('Enquiries response:', response.data);
                 setEnquiries(response.data);
             } catch (error) {
