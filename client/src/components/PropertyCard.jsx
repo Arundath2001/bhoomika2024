@@ -76,7 +76,7 @@ const PropertyCard = ({
     <div className='propertycard'>
       <div className='propertycard_cont'>
         <div className='propertycard_top'>
-          <img className='propertycard_img' src={`https://api.bhoomikarealestate.com/${imageurl}`} alt={propertyname} />
+          <img className='propertycard_img' src={`http:localhost:5000/${imageurl}`} alt={propertyname} />
           <div className='propertycard_topdata'>
             <div className={`propertycard_data1 ${propertyType}`}>{propertyType}</div>
             <div className='propertycard_data2'>
@@ -197,7 +197,8 @@ const PropertyCard = ({
         <div className='description_popup'>
           <button onClick={toggleDescription}><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M7 9a1 1 0 0 0-.707 1.707l5 5a1 1 0 0 0 1.414 0l5-5A1 1 0 0 0 17 9z" clip-rule="evenodd"/></svg></button>
           <p className='description_popuploc'>Location:</p> 
-          <p className='description_popupdet'>{locationdetails} <br /><br /> {description}</p>
+          <p className='description_popupdet'>{locationdetails}</p><br />
+          <p className='description_popupdet'>{description}</p>
         </div>
       )}
     </div>
