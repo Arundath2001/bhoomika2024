@@ -10,7 +10,7 @@ const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
-const allowedOrigins = ['https://www.bhoomikarealestate.com', 'https://bhoomikarealestate.com'];
+const allowedOrigins = ['https://www.bhoomikarealestate.com', 'https://bhoomikarealestate.com', 'http://localhost:5173'];
 
 app.use(cors({
   origin: function(origin, callback) {

@@ -33,6 +33,7 @@ function InputDrop({ id, type, label, name, value, onChange, required = false })
                         <>
                             <option value="Cent">Cent</option>
                             <option value="sq ft">sq ft</option>
+                            <option value="sq ft">Acres</option>
                         </>
                     ) : (
                         <>

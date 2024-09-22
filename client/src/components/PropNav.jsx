@@ -32,12 +32,6 @@ function PropNav({ selectedType, onSelect }) {
                         House
                     </div>
                     <div
-                        className={selectedType === "Villa" ? "active" : ""}
-                        onClick={() => handleSelect("Villa")}
-                    >
-                        Villa
-                    </div>
-                    <div
                         className={selectedType === "Land" ? "active" : ""}
                         onClick={() => handleSelect("Land")}
                     >
@@ -48,7 +42,14 @@ function PropNav({ selectedType, onSelect }) {
                         onClick={() => handleSelect("Commercial")}
                     >
                         Commercial
-                    </div>                
+                    </div>
+                    <div
+                        className={selectedType === "Villa" ? "active" : ""}
+                        onClick={() => handleSelect("Villa")}
+                    >
+                        Villa
+                    </div>
+                                    
                     <div
                         className={selectedType === "Rental" ? "active" : ""}
                         onClick={() => handleSelect("Rental")}
@@ -56,16 +57,16 @@ function PropNav({ selectedType, onSelect }) {
                         Rental
                     </div>
                     <div
-                        className={selectedType === "Farm Land" ? "active" : ""}
-                        onClick={() => handleSelect("Farm Land")}
-                    >
-                        Farm Land
-                    </div>
-                    <div
                         className={selectedType === "Industrial" ? "active" : ""}
                         onClick={() => handleSelect("Industrial")}
                     >
                         Industrial
+                    </div>
+                    <div
+                        className={selectedType === "Farm Land" ? "active" : ""}
+                        onClick={() => handleSelect("Farm Land")}
+                    >
+                        Farm Land
                     </div>
                 </div>
             </div>
