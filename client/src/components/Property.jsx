@@ -21,7 +21,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
     };
 
     const handleFormSubmit = async (propertyDetails) => {
-        console.log("Form submitted with data:", propertyDetails); // Log the details for debugging
+        console.log("Form submitted with data:", propertyDetails); 
     
         if (formMode === "edit") {
             if (!propertyDetails.id) {
