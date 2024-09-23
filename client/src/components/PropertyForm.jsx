@@ -80,42 +80,24 @@ function PropertyForm({
     }
   }, [mode, propertyData]);
 
-  const handleFileChange = async (e) => {
+  const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
-
+  
     if (files.length + selectedFiles.length > 6) {
-        setAlertMessage({
-            isVisible: true,
-            message: "You can only upload up to 6 images.",
-            isError: true,
-        });
-        return;
+      setAlertMessage({
+        isVisible: true,
+        message: "You can only upload up to 6 images.",
+        isError: true,
+      });
+      return;
     }
-
-    const compressedFilesPromises = selectedFiles.map(async (file) => {
-        const options = {
-            maxSizeMB: 1,
-            maxWidthOrHeight: 800,
-            useWebWorker: true,
-        };
-
-        try {
-            const compressedFile = await imageCompression(file, options);
-            const blob = new Blob([compressedFile], { type: 'image/png' });
-            return blob;
-        } catch (error) {
-            console.error("Error compressing file", error);
-            return file;
-        }
-    });
-
-    const compressedFiles = await Promise.all(compressedFilesPromises);
-
-    setFiles((prevFiles) => [...prevFiles, ...compressedFiles]);
-
-    const newPreviews = compressedFiles.map((file) => URL.createObjectURL(file));
+  
+    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+  
+    const newPreviews = selectedFiles.map((file) => URL.createObjectURL(file));
     setPreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
-};
+  };
+  
 
 
 

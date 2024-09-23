@@ -52,7 +52,8 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
         setIsFormOpen(false);
         fetchProperties();
     };
-
+    
+    
     const handleCheckboxChange = (id) => {
         setSelectedIds((prevSelectedIds) =>
             prevSelectedIds.includes(id)
@@ -69,8 +70,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
         return propertyName.includes(query) || fullName.includes(query);
     });
 
-    // Ensure only one property is selected for editing
-    const selectedProperty = properties.find(p => selectedIds.length === 1 && p.id === selectedIds[0]);
+    const selectedProperty = properties.find(p => selectedIds.includes(p.id));
 
     return (
         <div className="Property">
@@ -81,7 +81,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
                     <PropertyForm 
                         mode={formMode} 
                         setIsFormOpen={setIsFormOpen} 
-                        propertyData={selectedProperty} // Pass the selected property data
+                        propertyData={selectedProperty} 
                         onSubmit={handleFormSubmit} 
                         setSelectedIds={setSelectedIds} 
                         submitUrl="https://api.bhoomikarealestate.com/properties"
