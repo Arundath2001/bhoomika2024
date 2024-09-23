@@ -307,21 +307,55 @@ app.post('/properties', propertyUpload.array('files', 6), async (req, res) => {
 app.put('/properties/:id', propertyUpload.array('files', 6), async (req, res) => {
   const { id } = req.params;
   const {
-    propertyType, fullName, phoneNumber, propertyName,
-    numOfRooms, numOfToilets, locationDetails, plotSize,
-    budget, rentalType, commercialType, numOfBedRooms, description
+    propertyType,
+    fullName,
+    phoneNumber,
+    propertyName,
+    numOfRooms,
+    numOfToilets,
+    locationDetails,
+    plotSize,
+    budget,
+    rentalType,
+    commercialType,
+    numOfBedRooms,
+    description,
   } = req.body;
-  const files = req.files;
 
+  const files = req.files;
   const client = await pool.connect();
 
   try {
     await client.query('BEGIN');
 
+    const existingResult = await client.query('SELECT imageUrls FROM properties WHERE id = $1', [id]);
+    const existingImageUrls = existingResult.rows[0]?.imageurls || [];
+
+    const newImageUrls = files.map(file => path.join('uploads', 'properties', file.filename));
+
+    const removedImages = JSON.parse(req.body.removedImages || '[]');
+    console.log("Raw Removed Images:", req.body.removedImages); 
+
+    const normalizedExistingImageUrls = existingImageUrls.map(url => url.replace(/\\/g, '/'));
+    console.log("Normalized Existing Image URLs:", normalizedExistingImageUrls);
+
+  const normalizedRemovedImages = removedImages.map(url => url.replace(/^http:\/\/localhost:5000\//, '').replace(/\\/g, '/'));
+  console.log("Normalized Removed Images:", normalizedRemovedImages);
+
+  const filteredExistingImageUrls = normalizedExistingImageUrls.filter(url => !normalizedRemovedImages.includes(url));
+  console.log("Filtered Existing Image URLs:", filteredExistingImageUrls);
+
+
+    const allImageUrls = Array.from(new Set([...filteredExistingImageUrls, ...newImageUrls]));
+
+    const formattedImageUrls = allImageUrls.map(url => url.replace(/\\/g, '/'));
+
     let updateQuery = `UPDATE properties 
       SET propertyType = $1, fullName = $2, phoneNumber = $3, propertyName = $4, 
       numOfRooms = $5, numOfToilets = $6, locationDetails = $7, plotSize = $8, 
-      budget = $9, description = $10, numOfBedRooms = $11, rentalType = $12, commercialType = $13`;
+      budget = $9, description = $10, numOfBedRooms = $11, rentalType = $12, commercialType = $13, 
+      imageUrls = $14 
+      WHERE id = $15`;
 
     const values = [
       propertyType || null,
@@ -333,23 +367,13 @@ app.put('/properties/:id', propertyUpload.array('files', 6), async (req, res) =>
       locationDetails || null,
       plotSize || null,
       budget || null,
-      description || null,  
+      description || null,
       numOfBedRooms ? parseInt(numOfBedRooms, 10) : null,
       rentalType || null,
-      commercialType || null
+      commercialType || null,
+      JSON.stringify(formattedImageUrls), 
+      id
     ];
-
-    if (files && files.length > 0) {
-      const imageUrls = files.map(file => path.join('uploads', 'properties', file.filename));
-      updateQuery += ', imageUrls = $14';
-      values.push(JSON.stringify(imageUrls));
-    }
-
-    updateQuery += ' WHERE id = $' + (files && files.length > 0 ? '15' : '14');
-    values.push(id);
-
-    console.log('Update query:', updateQuery);
-    console.log('Final values array:', values);
 
     await client.query(updateQuery, values);
 
@@ -388,6 +412,7 @@ app.put('/properties/:id', propertyUpload.array('files', 6), async (req, res) =>
     client.release();
   }
 });
+
 
 
 

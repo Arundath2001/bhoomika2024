@@ -23,35 +23,32 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
     const handleFormSubmit = async (propertyDetails) => {
         console.log("Form submitted with data:", propertyDetails); 
     
-        if (formMode === "edit") {
-            if (!propertyDetails.id) {
-                console.error("Property ID is missing for update");
-                return;
-            }
-            try {
+        try {
+            if (formMode === "edit") {
+                if (!propertyDetails.id) {
+                    console.error("Property ID is missing for update");
+                    return;
+                }
                 await axios.put(`https://api.bhoomikarealestate.com/properties/${propertyDetails.id}`, propertyDetails);
                 setProperties((prevProperties) =>
                     prevProperties.map((prop) =>
-                        prop.id === propertyDetails.id ? propertyDetails : prop
+                        prop.id === propertyDetails.id ? { ...prop, ...propertyDetails } : prop
                     )
                 );
-                console.log("Property updated and city counts recalculated");
-            } catch (error) {
-                console.error("Error updating property", error);
-            }
-        } else {
-            try {
+                console.log("Property updated");
+            } else {
                 const response = await axios.post('https://api.bhoomikarealestate.com/properties', propertyDetails);
                 setProperties((prevProperties) => [...prevProperties, response.data]);
                 console.log("Property added");
-            } catch (error) {
-                console.error("Error adding property", error);
             }
+        } catch (error) {
+            console.error(formMode === "edit" ? "Error updating property" : "Error adding property", error);
+        } finally {
+            setIsFormOpen(false);
+            fetchProperties();
         }
-    
-        setIsFormOpen(false);
-        fetchProperties();
     };
+    
     
     
     const handleCheckboxChange = (id) => {

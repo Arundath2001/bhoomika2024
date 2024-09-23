@@ -53,6 +53,8 @@ function PropertyForm({
   const [loading, setLoading] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertText, setAlertText] = useState("");
+  const [removedImages, setRemovedImages] = useState([]);
+
 
   useEffect(() => {
     if (mode === "edit" && propertyData) {
@@ -66,53 +68,78 @@ function PropertyForm({
       setRentalType(propertyData.rentalType);
       setNumOfToilets(propertyData.numoftoilets);
       setLocationDetails(propertyData.locationdetails);
-
+  
       const [input, unit] = propertyData.plotsize.split(" ");
       setPlotSize({ input: input || "", unit: unit || "Cent" });
       const [budgetInput, budgetUnit] = propertyData.budget.split(" ");
       setBudget({ input: budgetInput || "", unit: budgetUnit || "Lakhs" });
       setDescription(propertyData.description || "");
-
+  
       const formattedImageUrls = propertyData.imageurls.map((url) => 
         url.startsWith("blob:") ? url : `https://api.bhoomikarealestate.com/${url.replace(/\\/g, '/')}`
-    );
-    setExistingImages(formattedImageUrls);
+      );
+      setExistingImages(formattedImageUrls);
     }
   }, [mode, propertyData]);
+  
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const selectedFiles = Array.from(e.target.files);
-  
+
     if (files.length + selectedFiles.length > 6) {
-      setAlertMessage({
-        isVisible: true,
-        message: "You can only upload up to 6 images.",
-        isError: true,
-      });
-      return;
+        setAlertMessage({
+            isVisible: true,
+            message: "You can only upload up to 6 images.",
+            isError: true,
+        });
+        return;
     }
-  
-    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
-  
-    const newPreviews = selectedFiles.map((file) => URL.createObjectURL(file));
+
+    const compressedFilesPromises = selectedFiles.map(async (file) => {
+        const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 800,
+            useWebWorker: true,
+        };
+
+        try {
+            const compressedFile = await imageCompression(file, options);
+            const blob = new Blob([compressedFile], { type: 'image/png' });
+            return blob;
+        } catch (error) {
+            console.error("Error compressing file", error);
+            return file;
+        }
+    });
+
+    const compressedFiles = await Promise.all(compressedFilesPromises);
+
+    setFiles((prevFiles) => [...prevFiles, ...compressedFiles]);
+
+    const newPreviews = compressedFiles.map((file) => URL.createObjectURL(file));
     setPreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
-  };
-  
+};
 
 
 
 
-const handleRemoveImage = (index, isNew = true) => {
-  if (isNew) {
-    const updatedFiles = files.filter((_, i) => i !== index);
-    const updatedPreviews = previews.filter((_, i) => i !== index);
-    setFiles(updatedFiles);
-    setPreviews(updatedPreviews);
-  } else {
+const combinedImages = [...existingImages, ...previews];
+
+const handleRemoveImage = (index) => {
+  if (index < existingImages.length) {
     const updatedImages = existingImages.filter((_, i) => i !== index);
     setExistingImages(updatedImages);
+    setRemovedImages((prev) => [...prev, existingImages[index]]);
+  } else {
+    const newIndex = index - existingImages.length;
+    const updatedFiles = files.filter((_, i) => i !== newIndex);
+    const updatedPreviews = previews.filter((_, i) => i !== newIndex);
+    setFiles(updatedFiles);
+    setPreviews(updatedPreviews);
   }
 };
+
+
 
   const handleCloseForm = () => {
     setIsFormOpen(false);
@@ -139,7 +166,7 @@ const handleRemoveImage = (index, isNew = true) => {
       });
       return;
     }
-
+  
     if (propertyType === "Land" && !description) {
       setAlertMessage({
         isVisible: true,
@@ -148,7 +175,7 @@ const handleRemoveImage = (index, isNew = true) => {
       });
       return;
     }
-
+  
     if (phoneNumber.length !== 10) {
       setAlertMessage({
         isVisible: true,
@@ -157,14 +184,14 @@ const handleRemoveImage = (index, isNew = true) => {
       });
       return;
     }
-
+  
     setLoading(true);
     setAlertText("Submitting form...");
     setAlertVisible(true);
-
+  
     const combinedPlotSize = `${plotSize.input} ${plotSize.unit}`;
     const combinedBudget = `${budget.input} ${budget.unit}`;
-
+  
     const formData = new FormData();
     formData.append("propertyType", propertyType || "");
     formData.append("fullName", fullName || "");
@@ -182,15 +209,26 @@ const handleRemoveImage = (index, isNew = true) => {
     if (showPropertyName) {
       formData.append("propertyName", propertyName || "");
     }
-
+  
+    const combinedImages = [
+      ...files.map(file => file.name),
+      ...existingImages.filter((img) => !removedImages.includes(img)),
+    ];
+  
+    formData.append("imageUrls", JSON.stringify(combinedImages));
+  
+    if (removedImages.length > 0) {
+      formData.append("removedImages", JSON.stringify(removedImages));
+    }
+  
     if (showImageUpload) {
       files.forEach((file) => formData.append("files", file));
     }
-
+  
     for (const [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
-
+  
     try {
       let response;
       if (mode === "edit" && propertyData) {
@@ -206,9 +244,9 @@ const handleRemoveImage = (index, isNew = true) => {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
-
+  
       setSelectedIds([]);
-
+  
       setAlertText("Property submitted successfully!");
       setTimeout(() => {
         handleCloseForm();
@@ -225,7 +263,9 @@ const handleRemoveImage = (index, isNew = true) => {
     } finally {
       setLoading(false);
     }
-  };
+};
+
+  
 
   return (
     <div className="propertyform">
@@ -395,14 +435,10 @@ const handleRemoveImage = (index, isNew = true) => {
               onChange={handleFileChange}
             />
 
-            <ImagePreview
-            previews={previews}
-            onRemove={(index) => handleRemoveImage(index, true)}
-            />
-            <ImagePreview
-                previews={existingImages}
-                onRemove={(index) => handleRemoveImage(index, false)}
-            />
+<ImagePreview
+            previews={combinedImages}
+            onRemove={(index) => handleRemoveImage(index, index < previews.length)}
+          />
 
             
           </>
