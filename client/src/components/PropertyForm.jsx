@@ -436,11 +436,18 @@ const handleRemoveImage = (index, isNew = true) => {
           />
           <InputDrop
             type="number"
-            label={`Budget per ${plotSize.unit === 'Cent' ? 'Cent' : 'Sq ft'}`}
+            label={`Budget per ${
+            plotSize.unit === 'Cent'
+            ? 'Cent'
+            : plotSize.unit === 'Acres'
+            ? 'Acre'
+            : 'Sq ft'
+            }`}
             required={setRequired ? true : false}
             value={budget}
             onChange={(value) => setBudget(value)}
-          />
+           />
+
         </div>
 
         <div className="propertyform_btns">
