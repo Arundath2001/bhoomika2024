@@ -339,7 +339,7 @@ app.put('/properties/:id', propertyUpload.array('files', 6), async (req, res) =>
     const normalizedExistingImageUrls = existingImageUrls.map(url => url.replace(/\\/g, '/'));
     console.log("Normalized Existing Image URLs:", normalizedExistingImageUrls);
 
-  const normalizedRemovedImages = removedImages.map(url => url.replace(/^http:\/\/localhost:5000\//, '').replace(/\\/g, '/'));
+  const normalizedRemovedImages = removedImages.map(url => url.replace(/^https:\/\/api.bhoomikarealestate.com\//, '').replace(/\\/g, '/'));
   console.log("Normalized Removed Images:", normalizedRemovedImages);
 
   const filteredExistingImageUrls = normalizedExistingImageUrls.filter(url => !normalizedRemovedImages.includes(url));
