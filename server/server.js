@@ -624,32 +624,38 @@ app.get('/enquiries', async (req, res) => {
 });
 
 app.post('/schedule-visit', async (req, res) => {
-  const { fullName, email, phoneNumber, visitDate, visitTime, propertyName, locationDetails } = req.body;
+  const { fullName, email, phoneNumber, visitDate, visitTime, visitTimePeriod, propertyName, locationDetails } = req.body;
 
   console.log({
-    fullName,
-    email,
-    phoneNumber,
-    visitDate,
-    visitTime,
-    propertyName,
-    locationDetails
+      fullName,
+      email,
+      phoneNumber,
+      visitDate,
+      visitTime,
+      visitTimePeriod,
+      propertyName,
+      locationDetails
   });
 
   const formattedVisitDate = visitDate && visitDate.trim() !== '' ? visitDate : null;
-  const formattedVisitTime = visitTime && visitTime.trim() !== '' ? visitTime : null;
+  
+  // Ensure to combine visitTime and visitTimePeriod
+  const formattedVisitTime = visitTime && visitTime.trim() !== '' 
+      ? `${visitTime} ${visitTimePeriod}` 
+      : null;
 
   try {
-    await pool.query(
-      'INSERT INTO visit_schedules (fullname, email, phone_number, visit_date, visit_time, property_name, location_details) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-      [fullName, email, phoneNumber, formattedVisitDate, formattedVisitTime, propertyName, locationDetails]
-    );
-    res.status(201).send('Visit scheduled');
+      await pool.query(
+          'INSERT INTO visit_schedules (fullname, email, phone_number, visit_date, visit_time, property_name, location_details) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+          [fullName, email, phoneNumber, formattedVisitDate, formattedVisitTime, propertyName, locationDetails]
+      );
+      res.status(201).send('Visit scheduled');
   } catch (err) {
-    console.error(err);
-    res.status(500).send('Server error');
+      console.error(err);
+      res.status(500).send('Server error');
   }
 });
+
 
 app.get('/schedules', async (req, res) => {
   try {

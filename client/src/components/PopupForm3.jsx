@@ -17,17 +17,18 @@ function PopupForm3({ onClose, propertyDetails }) {
     const [visitTime, setVisitTime] = useState('');
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState({ isVisible: false, message: '', isError: false });
+    const [visitTimePeriod, setVisitTimePeriod] = useState('AM');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         if (phoneNumber.length !== 10) {
             setAlert({ isVisible: true, message: "Phone number must be exactly 10 digits.", isError: true });
             return;
         }
-
+    
         setLoading(true);
-
+    
         try {
             await axios.post('https://api.bhoomikarealestate.com/schedule-visit', {
                 fullName,
@@ -35,6 +36,7 @@ function PopupForm3({ onClose, propertyDetails }) {
                 phoneNumber,
                 visitDate,
                 visitTime,
+                visitTimePeriod, 
                 propertyName: propertyDetails.propertyName,
                 locationDetails: propertyDetails.locationDetails
             });
@@ -49,6 +51,7 @@ function PopupForm3({ onClose, propertyDetails }) {
             setLoading(false);
         }
     };
+    
 
     useEffect(() => {
         if (!loading && alert.isVisible) {
@@ -74,7 +77,14 @@ function PopupForm3({ onClose, propertyDetails }) {
                 <PhoneInput type="number" label="Phone Number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
                 <div className="popupform3_row2">
                     <DateInput label="Date" value={visitDate} onChange={setVisitDate} required />
-                    <TimeInput label="Time" value={visitTime} onChange={setVisitTime} required />
+                    <TimeInput 
+    label="Time" 
+    value={visitTime} 
+    onChange={setVisitTime} 
+    period={visitTimePeriod} 
+    onPeriodChange={setVisitTimePeriod} 
+    required 
+/>
                 </div>
 
                 <div className="propertyform_btns">

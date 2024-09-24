@@ -100,7 +100,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
                                 <tr>
                                     <th>Select</th>
                                     <th>Property Type</th>
-                                    <th>Full Name</th>
+                                    <th>Property Holder Name</th>
                                     <th>Phone Number</th>
                                     <th>Rental Type</th>
                                     <th>Commercial Type</th>
