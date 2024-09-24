@@ -13,7 +13,6 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
     const fetchProperties = async () => {
         try {
             const response = await axios.get('https://api.bhoomikarealestate.com/properties');
-            console.log("Fetched properties:", response.data);
             setProperties(response.data);
         } catch (error) {
             console.error("Error fetching properties", error);

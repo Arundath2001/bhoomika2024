@@ -132,7 +132,7 @@ const handleRemoveImage = (index) => {
   const handleSubmit = async () => {
     if (
       !isFieldValid(propertyType, true) ||
-      !isFieldValid(fullName, true) ||
+      (!setName && !isFieldValid(fullName, true)) ||
       !isFieldValid(phoneNumber, true) ||
       !isFieldValid(locationDetails, setRequired) ||
       !isFieldValid(plotSize.input, setRequired) ||
@@ -205,7 +205,6 @@ const handleRemoveImage = (index) => {
     }
   
     for (const [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
     }
   
     try {
@@ -328,10 +327,11 @@ const handleRemoveImage = (index) => {
             <InputNormal
               type="text"
               label={setName ? 'Property Holder Name' : 'Full Name'}
-              required
+              required={setRequired ? false : true}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
+
             <PhoneInput
               type="number"
               label="Phone Number"
@@ -377,10 +377,11 @@ const handleRemoveImage = (index) => {
             <InputNormal
               type="text"
               label={setName ? 'Property Holder Name' : 'Full Name'}
-              required
+              required={setRequired ? false : true}  
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
+
             <PhoneInput
               type="number"
               label="Phone Number"

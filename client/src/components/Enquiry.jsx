@@ -21,7 +21,6 @@ function Enquiry({ setSelectedIds, dataChanged, searchQuery }) {
         const fetchEnquiries = async () => {
             try {
                 const response = await axios.get('https://api.bhoomikarealestate.com/enquiries');
-                console.log('Enquiries response:', response.data);
                 setEnquiries(response.data);
             } catch (error) {
                 console.error('Error fetching enquiries:', error);

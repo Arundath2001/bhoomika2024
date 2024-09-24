@@ -224,7 +224,7 @@ app.post('/properties', propertyUpload.array('files', 6), async (req, res) => {
   } = req.body;
   const files = req.files;
 
-  if (!propertyType || !fullName || !phoneNumber || !locationDetails || !plotSize || !budget) {
+  if (!propertyType || !phoneNumber || !locationDetails || !plotSize || !budget) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
@@ -479,28 +479,40 @@ app.delete('/properties', async (req, res) => {
 
       console.log('Fetched imageUrls:', imageUrls);
 
-      for (const imageUrl of imageUrls) {
-        if (imageUrl) {
-          const normalizedImageUrl = imageUrl.replace(/\\/g, '/');
-          const fileName = path.basename(normalizedImageUrl);
-          const filePath = path.join(__dirname, 'uploads', 'properties', fileName);
-
-          console.log('Attempting to delete file at path:', filePath);
-
-          try {
-            if (fs.existsSync(filePath)) {
-              fs.unlinkSync(filePath);
-              console.log('File deleted:', filePath);
-            } else {
-              console.warn('Image file not found at path:', filePath);
+      for (const property of properties.rows) {
+        const imageUrls = property.imageurls;
+      
+        if (!Array.isArray(imageUrls) || imageUrls.length === 0) {
+          console.warn('No valid imageUrls found for property:', property);
+          continue;  
+        }
+      
+        console.log('Fetched imageUrls:', imageUrls);
+      
+        for (const imageUrl of imageUrls) {
+          if (imageUrl) {
+            const normalizedImageUrl = imageUrl.replace(/\\/g, '/');  
+            const fileName = path.basename(normalizedImageUrl);
+            const filePath = path.join(__dirname, 'uploads', 'properties', fileName);
+      
+            console.log('Attempting to delete file at path:', filePath);
+      
+            try {
+              if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+                console.log('File deleted:', filePath);
+              } else {
+                console.warn('Image file not found at path:', filePath);
+              }
+            } catch (fsError) {
+              console.error('Error deleting file:', fsError);
             }
-          } catch (fsError) {
-            console.error('Error deleting file:', fsError);
+          } else {
+            console.warn('Empty image URL found for property:', property);
           }
-        } else {
-          console.warn('Empty image URL found for property:', property);
         }
       }
+      
     }
 
     await client.query('DELETE FROM properties WHERE id = ANY($1::int[])', [ids]);
