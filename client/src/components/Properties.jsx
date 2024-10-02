@@ -5,16 +5,15 @@ import PropNav from "./PropNav";
 import PropertyCard from "./PropertyCard";
 import axios from "axios";
 import LinkIcon from "./LinkIcon";
-import LoadingScreen from './LoadingScreen';
 import AlertBox from './AlertBox';
-
+import SearchBar from './SearchBar';  
 
 function Properties() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedType, setSelectedType] = useState("All Properties");
-
+  const [searchTerm, setSearchTerm] = useState(""); 
   useEffect(() => {
     axios.get('https://api.bhoomikarealestate.com/properties')
       .then(response => {
@@ -24,16 +23,17 @@ function Properties() {
       .catch(error => {
         setError("Error fetching properties");
         setLoading(false);
-      });      
+      });
   }, []);
 
-  if (loading) return <AlertBox text = 'Loading...' />;
+  if (loading) return <AlertBox text='Loading...' />;
 
   if (error) return <p>{error}</p>;
 
-  const filteredProperties = selectedType === "All Properties"
-    ? properties
-    : properties.filter(property => property.propertytype === selectedType);
+  const filteredProperties = properties.filter(property => 
+    (selectedType === "All Properties" || property.propertytype === selectedType) &&
+    property.locationdetails.toLowerCase().includes(searchTerm.toLowerCase()) 
+  );
 
   const propertiesToDisplay = filteredProperties.slice(0, 6);
 
@@ -43,7 +43,11 @@ function Properties() {
         maintext="Available Properties" 
         subtext="Explore a diverse selection of properties to find the perfect fit for your needs and budget." 
       />
+      
+      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
       <PropNav selectedType={selectedType} onSelect={setSelectedType} />
+
       <div className="properties_cont">
         <div className="properties_cards">
           {propertiesToDisplay.length > 0 ? (

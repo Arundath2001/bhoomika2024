@@ -7,6 +7,8 @@ import axios from "axios";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import AlertBox from "./AlertBox";
+import SearchBar from './SearchBar';  
+
 
 function PropertiesPage() {
   const [properties, setProperties] = useState([]);
@@ -15,6 +17,7 @@ function PropertiesPage() {
   const [selectedType, setSelectedType] = useState("All Properties");
   const [currentPage, setCurrentPage] = useState(1);
   const [propertiesPerPage, setPropertiesPerPage] = useState(9);
+  const [searchTerm, setSearchTerm] = useState(""); 
 
   useEffect(() => {
     axios.get('https://api.bhoomikarealestate.com/properties')
@@ -44,9 +47,10 @@ function PropertiesPage() {
   if (loading) return <AlertBox text = 'Loading...' />;
   if (error) return <p>{error}</p>;
 
-  const filteredProperties = selectedType === "All Properties"
-    ? properties
-    : properties.filter(property => property.propertytype === selectedType);
+  const filteredProperties = properties.filter(property => 
+    (selectedType === "All Properties" || property.propertytype === selectedType) &&
+    property.locationdetails.toLowerCase().includes(searchTerm.toLowerCase()) 
+  );
 
   const indexOfLastProperty = currentPage * propertiesPerPage;
   const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
@@ -83,6 +87,9 @@ function PropertiesPage() {
         maintext="All Properties" 
         subtext="Explore a diverse selection of properties to find the perfect fit for your needs and budget." 
       />
+
+      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
       <PropNav selectedType={selectedType} onSelect={setSelectedType} />
       <div className="properties_cont">
         <div className="properties_cards">

@@ -8,6 +8,8 @@ import Navbar from "./Navbar";
 import PropNav from "./PropNav";
 import Footer from "./Footer";
 import AlertBox from "./AlertBox";
+import SearchBar from './SearchBar';  
+
 
 function CityPages() {
     const { cityName } = useParams();
@@ -17,6 +19,7 @@ function CityPages() {
     const [currentPage, setCurrentPage] = useState(1);
     const propertiesPerPage = 9;
     const [selectedType, setSelectedType] = useState("All Properties");
+    const [searchTerm, setSearchTerm] = useState(""); 
 
 
     useEffect(() => {
@@ -34,9 +37,10 @@ function CityPages() {
     if (loading) return <AlertBox text="Loading..." />;
     if (error) return <p>{error}</p>;
 
-    const filteredProperties = selectedType === "All Properties"
-    ? properties
-    : properties.filter(property => property.propertytype === selectedType);
+    const filteredProperties = properties.filter(property => 
+      (selectedType === "All Properties" || property.propertytype === selectedType) &&
+      property.locationdetails.toLowerCase().includes(searchTerm.toLowerCase()) 
+    );
 
     const indexOfLastProperty = currentPage * propertiesPerPage;
     const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
@@ -73,6 +77,7 @@ function CityPages() {
                 maintext={`Properties in ${cityName}`}
                 subtext={`Explore properties available in ${cityName}.`}
             />
+      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <PropNav selectedType={selectedType} onSelect={setSelectedType} />
       <div className="properties_cont">
         <div className="properties_cards">
