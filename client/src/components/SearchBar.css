@@ -38,6 +38,10 @@
         font-weight: 400;
     }
 
+    .searchbar input::placeholder {
+        font-weight: 400;
+        font-size: 14px;
+    }
     .searchbar svg{
         width: 16px;
         height: 16px;
