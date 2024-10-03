@@ -30,6 +30,16 @@
 @media only screen and (max-width: 600px) {
     .searchbar{
         width: 90%;
+        padding: 6px;
+    }
+
+    .searchbar input{
+        font-size: 14px;
+    }
+
+    .searchbar svg{
+        width: 16px;
+        height: 16px;
     }
 }
 

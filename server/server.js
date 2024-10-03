@@ -639,7 +639,6 @@ app.post('/schedule-visit', async (req, res) => {
 
   const formattedVisitDate = visitDate && visitDate.trim() !== '' ? visitDate : null;
   
-  // Ensure to combine visitTime and visitTimePeriod
   const formattedVisitTime = visitTime && visitTime.trim() !== '' 
       ? `${visitTime} ${visitTimePeriod}` 
       : null;
