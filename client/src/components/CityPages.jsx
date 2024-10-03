@@ -84,17 +84,21 @@ function CityPages() {
           {currentProperties.length > 0 ? (
             currentProperties.map(property => (
               <PropertyCard
-                key={property.id}
-                propertyname={property.propertyname}
-                propertyType={property.propertytype}
-                fullname={property.fullname}
-                locationdetails={property.locationdetails}
-                plotsize={property.plotsize}
-                budget={property.budget}
-                imageurls={property.imageurls} 
-                updateddate={property.updateddate}
-                numofrooms={property.numofrooms}
-                numoftoilets={property.numoftoilets}
+              key={property.id}
+              propertyname={property.propertyname}
+              propertyType={property.propertytype}
+              commercialtype={property.commercialtype}
+              rentaltype={property.rentaltype}
+              numofrooms={property.numofrooms}
+              fullname={property.fullname}
+              locationdetails={property.locationdetails}
+              plotsize={property.plotsize}
+              budget={property.budget}
+              imageurls={property.imageurls} 
+              updateddate={property.updateddate}
+              numofbedrooms={property.numofbedrooms}
+              numoftoilets={property.numoftoilets}
+              description={property.description}
               />
             ))
           ) : (
