@@ -99,6 +99,7 @@ function CityPages() {
               numofbedrooms={property.numofbedrooms}
               numoftoilets={property.numoftoilets}
               description={property.description}
+              villarooms={property.villa_rooms}
               />
             ))
           ) : (

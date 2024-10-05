@@ -71,7 +71,7 @@ function PropertyForm({
       setLocationDetails(propertyData.locationdetails);
 
       if (propertyData.propertytype === "Villa") {
-        setVillaRooms(propertyData.villaRooms || "");
+        setVillaRooms(propertyData.villa_rooms || "");
       }
   
       const [input, unit] = propertyData.plotsize.split(" ");
