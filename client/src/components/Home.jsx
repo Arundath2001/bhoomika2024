@@ -125,8 +125,8 @@ function Home() {
                     />
                 </div>
 
-                <Avatar />
-                <Avatar1 />
+                {/* <Avatar />
+                <Avatar1 /> */}
 
                 <ScrollDown onClick={scrollToCities} /> 
             </div>

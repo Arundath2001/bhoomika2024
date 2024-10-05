@@ -9,7 +9,7 @@ import PopupForm3 from './PopupForm3';
 import ImagePopup from './ImagePopup';
 
 const PropertyCard = ({ 
-  propertyname, imageurls, numofbedrooms, plotsize, locationdetails, propertyType, name, location, ratePerCent, price, beds, baths, numoftoilets, budget, description, rentaltype, commercialtype, numofrooms 
+  propertyname, imageurls, numofbedrooms, plotsize, locationdetails, propertyType, name, location, ratePerCent, price, beds, baths, numoftoilets, budget, description, rentaltype, commercialtype, numofrooms, villarooms 
 }) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isImagePopupVisible, setIsImagePopupVisible] = useState(false);
@@ -154,14 +154,23 @@ const PropertyCard = ({
           <div className='propertycard_details4'>
             {isVillaOrHouse && (
               <>
-                <IconText border={"icontext_border"} text={`${numofbedrooms} Beds`} svg={
-                  <svg xmlns="http://www.w3.org/2000/svg" width="614.41" height="384" viewBox="0 0 2048 1280">
-                    <path fill="black" d="M256 768h1728q26 0 45 19t19 45v448h-256v-256H256v256H0V64q0-26 19-45T64 0h128q26 0 45 19t19 45zm576-320q0-106-75-181t-181-75t-181 75t-75 181t75 181t181 75t181-75t75-181m1216 256v-64q0-159-112.5-271.5T1664 256H960q-26 0-45 19t-19 45v384z"/>
-                  </svg>
-                } />
-                <IconText border={"icontext_border"} text={`${numoftoilets} Baths`} svg={
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill="currentColor" d="M32 384a95.4 95.4 0 0 0 32 71.09V496a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16v-16h256v16a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16v-40.91A95.4 95.4 0 0 0 480 384v-48H32Zm464-128H80V69.25a21.26 21.26 0 0 1 36.28-15l19.27 19.26c-13.13 29.88-7.61 59.11 8.62 79.73l-.17.17a16 16 0 0 0 0 22.59l11.31 11.31a16 16 0 0 0 22.63 0L283.31 81.94a16 16 0 0 0 0-22.63L272 48a16 16 0 0 0-22.62 0l-.17.17c-20.62-16.23-49.83-21.75-79.73-8.62l-19.26-19.27A69.25 69.25 0 0 0 32 69.25V256H16a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h480a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16"/></svg>
-                } />
+              {propertyType === 'Villa' && (
+        <IconText border={"icontext_border"} text={`${villarooms} BHK`} svg={
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><g fill="currentColor"><path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1s.5.448.5 1s-.224 1-.5 1"/><path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117M11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5M4 1.934V15h6V1.077z"/></g></svg>
+        } />
+      )}
+                 {propertyType === 'House' && (
+        <>
+          <IconText border={"icontext_border"} text={`${numofbedrooms} Beds`} svg={
+            <svg xmlns="http://www.w3.org/2000/svg" width="614.41" height="384" viewBox="0 0 2048 1280">
+              <path fill="black" d="M256 768h1728q26 0 45 19t19 45v448h-256v-256H256v256H0V64q0-26 19-45T64 0h128q26 0 45 19t19 45zm576-320q0-106-75-181t-181-75t-181 75t-75 181t75 181t181 75t181-75t75-181m1216 256v-64q0-159-112.5-271.5T1664 256H960q-26 0-45 19t-19 45v384z"/>
+            </svg>
+          } />
+          <IconText border={"icontext_border"} text={`${numoftoilets} Baths`} svg={
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill="currentColor" d="M32 384a95.4 95.4 0 0 0 32 71.09V496a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16v-16h256v16a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16v-40.91A95.4 95.4 0 0 0 480 384v-48H32Zm464-128H80V69.25a21.26 21.26 0 0 1 36.28-15l19.27 19.26c-13.13 29.88-7.61 59.11 8.62 79.73l-.17.17a16 16 0 0 0 0 22.59l11.31 11.31a16 16 0 0 0 22.63 0L283.31 81.94a16 16 0 0 0 0-22.63L272 48a16 16 0 0 0-22.62 0l-.17.17c-20.62-16.23-49.83-21.75-79.73-8.62l-19.26-19.27A69.25 69.25 0 0 0 32 69.25V256H16a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h480a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16"/></svg>
+          } />
+        </>
+      )}
               </>
             )}
           </div>

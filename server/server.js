@@ -220,9 +220,12 @@ app.post('/properties', propertyUpload.array('files', 6), async (req, res) => {
   const {
     propertyType, fullName, phoneNumber, propertyName, numOfBedRooms,
     numOfRooms, numOfToilets, locationDetails, plotSize,
-    budget, description, commercialType, rentalType
+    budget, description, commercialType, rentalType, villaRooms
   } = req.body;
   const files = req.files;
+
+  console.log(req.body);
+  
 
   if (!propertyType || !phoneNumber || !locationDetails || !plotSize || !budget) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -248,6 +251,7 @@ app.post('/properties', propertyUpload.array('files', 6), async (req, res) => {
     numOfBedRooms ? parseInt(numOfBedRooms, 10) : null,
     commercialType || null,
     rentalType || null,
+    villaRooms || null,
   ];
 
   const client = await pool.connect();
@@ -256,8 +260,8 @@ app.post('/properties', propertyUpload.array('files', 6), async (req, res) => {
     await client.query('BEGIN');
 
     await client.query(
-      `INSERT INTO properties (propertyType, fullName, phoneNumber, propertyName, numOfRooms, numOfToilets, locationDetails, plotSize, budget, description, imageUrls, numOfBedRooms, commercialType, rentalType)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
+      `INSERT INTO properties (propertyType, fullName, phoneNumber, propertyName, numOfRooms, numOfToilets, locationDetails, plotSize, budget, description, imageUrls, numOfBedRooms, commercialType, rentalType, villa_Rooms)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`,
       values
     );
 
@@ -320,6 +324,7 @@ app.put('/properties/:id', propertyUpload.array('files', 6), async (req, res) =>
     commercialType,
     numOfBedRooms,
     description,
+    villaRooms
   } = req.body;
 
   const files = req.files;
@@ -354,8 +359,8 @@ app.put('/properties/:id', propertyUpload.array('files', 6), async (req, res) =>
       SET propertyType = $1, fullName = $2, phoneNumber = $3, propertyName = $4, 
       numOfRooms = $5, numOfToilets = $6, locationDetails = $7, plotSize = $8, 
       budget = $9, description = $10, numOfBedRooms = $11, rentalType = $12, commercialType = $13, 
-      imageUrls = $14 
-      WHERE id = $15`;
+      imageUrls = $14, villa_Rooms = $15 
+      WHERE id = $16`;
 
     const values = [
       propertyType || null,
@@ -371,7 +376,8 @@ app.put('/properties/:id', propertyUpload.array('files', 6), async (req, res) =>
       numOfBedRooms ? parseInt(numOfBedRooms, 10) : null,
       rentalType || null,
       commercialType || null,
-      JSON.stringify(formattedImageUrls), 
+      JSON.stringify(formattedImageUrls),
+      villaRooms || null, 
       id
     ];
 
@@ -571,7 +577,8 @@ app.post('/enquiries',propertyUpload.array('files', 6), async (req, res) => {
     locationDetails, 
     plotSize, 
     budget, 
-    description 
+    description,
+    villaRooms 
   } = req.body;
 
   console.log(req.body);
@@ -594,14 +601,15 @@ app.post('/enquiries',propertyUpload.array('files', 6), async (req, res) => {
     description || null,
     numOfBedRooms ? parseInt(numOfBedRooms, 10) : null,
     commercialType || null,
-    rentalType || null
+    rentalType || null,
+    villaRooms || null
   ];
 
   try {
     await pool.query(
       `INSERT INTO enquiry 
-        (fullName, phone, propertyType, numOfRooms, numOfToilets, locationDetails, plotSize, budget, description, numOfBedRooms, commercialType, rentalType) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`, 
+        (fullName, phone, propertyType, numOfRooms, numOfToilets, locationDetails, plotSize, budget, description, numOfBedRooms, commercialType, rentalType, villa_Rooms) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`, 
       values
     );
 
@@ -695,7 +703,8 @@ app.post('/selling-info', sellingUpload.array('files', 6), async (req, res) => {
     locationDetails, 
     plotSize, 
     budget,
-    description
+    description,
+    villaRooms
   } = req.body;
   
   const files = req.files;
@@ -720,13 +729,14 @@ app.post('/selling-info', sellingUpload.array('files', 6), async (req, res) => {
     description || null,
     numOfBedRooms ? parseInt(numOfBedRooms, 10) : null,
     commercialType || null,
-    rentalType || null
+    rentalType || null,
+    villaRooms || null
   ];
 
   try {
     await pool.query(
-      `INSERT INTO selling_info (fullName, phone, propertyType, propertyName, numOfRooms, numOfToilets, locationDetails, plotSize, budget, imageUrls, description, numOfBedRooms, commercialType, rentalType)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`, 
+      `INSERT INTO selling_info (fullName, phone, propertyType, propertyName, numOfRooms, numOfToilets, locationDetails, plotSize, budget, imageUrls, description, numOfBedRooms, commercialType, rentalType, villa_Rooms)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`, 
       values
     );
 

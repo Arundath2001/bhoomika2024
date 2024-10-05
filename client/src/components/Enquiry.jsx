@@ -63,6 +63,7 @@ function Enquiry({ setSelectedIds, dataChanged, searchQuery }) {
                         <th>Rental Type</th>
                         <th>Number of Bed Rooms</th>
                         <th>Number of Bathsrooms</th>
+                        <th>Number of Villa Rooms</th>
                         <th>Location Details</th>
                         <th>Plot Size</th>
                         <th>Budget</th>
@@ -87,6 +88,7 @@ function Enquiry({ setSelectedIds, dataChanged, searchQuery }) {
                             <td>{formatField(enquiry.rentaltype)}</td>
                             <td>{formatField(enquiry.numofbedrooms)}</td>
                             <td>{formatField(enquiry.numoftoilets)}</td>
+                            <td>{formatField(enquiry.villa_rooms)}</td>
                             <td>{formatField(enquiry.locationdetails)}</td>
                             <td>{formatField(enquiry.plotsize)}</td>
                             <td>{formatField(enquiry.budget)}</td>

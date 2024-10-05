@@ -54,6 +54,7 @@ function PropertyForm({
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertText, setAlertText] = useState("");
   const [removedImages, setRemovedImages] = useState([]);
+  const [villaRooms, setVillaRooms] = useState("");
 
 
   useEffect(() => {
@@ -68,6 +69,10 @@ function PropertyForm({
       setRentalType(propertyData.rentalType);
       setNumOfToilets(propertyData.numoftoilets);
       setLocationDetails(propertyData.locationdetails);
+
+      if (propertyData.propertytype === "Villa") {
+        setVillaRooms(propertyData.villaRooms || "");
+      }
   
       const [input, unit] = propertyData.plotsize.split(" ");
       setPlotSize({ input: input || "", unit: unit || "Cent" });
@@ -187,6 +192,10 @@ const handleRemoveImage = (index) => {
 
     if (showPropertyName) {
       formData.append("propertyName", propertyName || "");
+    }
+
+    if (propertyType === "Villa") {
+      formData.append("villaRooms", villaRooms || ""); 
     }
   
     const combinedImages = [
@@ -323,50 +332,61 @@ const handleRemoveImage = (index) => {
         </div>
 
         {(propertyType === "House" || propertyType === "Villa") && (
-          <>
-            <InputNormal
-              type="text"
-              label={setName ? 'Property Holder Name' : 'Full Name'}
-              required={setRequired ? false : true}
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-            />
+  <>
+    <InputNormal
+      type="text"
+      label={setName ? 'Property Holder Name' : 'Full Name'}
+      required={setRequired ? false : true}
+      value={fullName}
+      onChange={(e) => setFullName(e.target.value)}
+    />
 
-            <PhoneInput
-              type="number"
-              label="Phone Number"
-              required
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-            {showPropertyName && (
-              <InputNormal
-                type="text"
-                label="Property Name"
-                required={setRequired ? true : false}
-                value={propertyName}
-                onChange={(e) => setPropertyName(e.target.value)}
-              />
-            )}
-            <div className="propertyform_row1">
-              <InputNormal
-                type="number"
-                label="Number of Bed Rooms"
-                required={setRequired ? true : false}
-                value={numOfBedRooms}
-                onChange={(e) => setNumOfBedRooms(e.target.value)}
-              />
-              <InputNormal
-                type="number"
-                label="Number of Baths"
-                required={setRequired ? true : false}
-                value={numOfToilets}
-                onChange={(e) => setNumOfToilets(e.target.value)}
-              />
-            </div>
+    <PhoneInput
+      type="number"
+      label="Phone Number"
+      required
+      value={phoneNumber}
+      onChange={(e) => setPhoneNumber(e.target.value)}
+    />
+    {showPropertyName && (
+      <InputNormal
+        type="text"
+        label="Property Name"
+        required={setRequired ? true : false}
+        value={propertyName}
+        onChange={(e) => setPropertyName(e.target.value)}
+      />
+    )}
+    
+    {propertyType === "Villa" ? (
+      <InputNormal
+        type="text"
+        label="Villa Rooms"
+        required={setRequired ? true : false}
+        value={villaRooms} 
+        onChange={(e) => setVillaRooms(e.target.value)} 
+      />
+    ) : (
+      <div className="propertyform_row1">
+        <InputNormal
+          type="number"
+          label="Number of Bed Rooms"
+          required={setRequired ? true : false}
+          value={numOfBedRooms}
+          onChange={(e) => setNumOfBedRooms(e.target.value)}
+        />
+        <InputNormal
+          type="number"
+          label="Number of Baths"
+          required={setRequired ? true : false}
+          value={numOfToilets}
+          onChange={(e) => setNumOfToilets(e.target.value)}
+        />
+      </div>
+    )}
+  </>
+)}
 
-          </>
-        )}
 
         {(propertyType === "Commercial" ||
           propertyType === "Land" ||

@@ -93,6 +93,7 @@ function SellingInfo({ setSelectedIds, dataChanged, searchQuery }) {
                                 <th>Property Name</th>
                                 <th>Number of Bed Rooms</th>
                                 <th>Number of Rooms</th>
+                                <th>Number of Villa Rooms</th>
                                 <th>Number of Toilets</th>
                                 <th>Location Details</th>
                                 <th>Plot Size</th>
@@ -122,6 +123,7 @@ function SellingInfo({ setSelectedIds, dataChanged, searchQuery }) {
                                         <td>{handleEmptyField(info.propertyname)}</td>
                                         <td>{handleEmptyField(info.numofbedrooms)}</td>
                                         <td>{handleEmptyField(info.numofrooms)}</td>
+                                        <td>{handleEmptyField(info.villa_rooms)}</td>
                                         <td>{handleEmptyField(info.numoftoilets)}</td>
                                         <td>{handleEmptyField(info.locationdetails)}</td>
                                         <td>{handleEmptyField(info.plotsize)}</td>
