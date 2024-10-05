@@ -142,7 +142,7 @@ function Home() {
                 <Properties />
             </div>
 
-            <Reviews />
+            {/* <Reviews /> */}
 
             <div id="contact" ref={contactRef}>
                 <Contact />
