@@ -66,10 +66,15 @@ const PropertyCard = ({
   const toggleDescription = () => setIsDescriptionVisible(prev => !prev);
 
   const getRateLabel = () => {
-    if (plotsize.toLowerCase().includes('sq')) return 'Rate per sq ft';
+    if(propertyType == 'Land' || propertyType == 'Farm'){
+      if (plotsize.toLowerCase().includes('sq')) return 'Rate per sq ft';
     
-    if (plotsize.toLowerCase().includes('acre')) return 'Rate per acre';
-    return 'Rate per cent';    
+      if (plotsize.toLowerCase().includes('acre')) return 'Rate per acre';
+      
+      if (plotsize.toLowerCase().includes('cent')) return 'Rate per cent';
+      
+    }    
+    return 'Rate';
   };
 
   return (

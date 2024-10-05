@@ -454,17 +454,20 @@ const handleRemoveImage = (index) => {
           />
           <InputDrop
             type="number"
-            label={`Budget per ${
-            plotSize.unit === 'Cent'
-            ? 'Cent'
-            : plotSize.unit === 'Acres'
-            ? 'Acre'
-            : 'Sq ft'
-            }`}
+            label={propertyType === 'Land' || propertyType === 'Farm Land' 
+              ? `Budget per ${
+                  plotSize.unit === 'Cent'
+                    ? 'Cent'
+                    : plotSize.unit === 'Acres'
+                    ? 'Acre'
+                    : 'Sq ft'
+                }`
+              : 'Budget'}
             required={setRequired ? true : false}
             value={budget}
             onChange={(value) => setBudget(value)}
-           />
+          />
+
 
         </div>
 

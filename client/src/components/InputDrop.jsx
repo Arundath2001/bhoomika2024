@@ -40,6 +40,7 @@ function InputDrop({ id, type, label, name, value, onChange, required = false })
                             <option value="Lakhs">Lakhs</option>
                             <option value="Thousands">Thousands</option>
                             <option value="Crores">Crores</option>
+                            <option value="Rupees">Rupees</option>
                         </>
                     )}
                 </select>
