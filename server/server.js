@@ -658,6 +658,68 @@ app.post('/schedule-visit', async (req, res) => {
           'INSERT INTO visit_schedules (fullname, email, phone_number, visit_date, visit_time, property_name, location_details, description, property_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
           [fullName, email, phoneNumber, formattedVisitDate, formattedVisitTime, propertyName, locationDetails, description, property_id]
       );
+
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.hostinger.com', 
+        port: 465,
+        secure: true, 
+        auth: {
+            user: 'dilna@bhoomikarealestate.com', 
+            pass: 'Bhoomika@2024' 
+        }
+    });
+
+    const mailOptions = {
+      from: '"Bhoomika Real Estate Website" <dilna@bhoomikarealestate.com>', 
+      to: 'dilna@bhoomikarealestate.com', 
+      subject: 'New Visit Scheduled',
+      html: `
+          <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
+              <h3 style="background-color: #4CAF50; color: white; padding: 10px 15px; text-align: center; border-radius: 5px;">New Visit Scheduled</h3>
+              <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                  <tr>
+                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Full Name:</td>
+                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${fullName}</td>
+                  </tr>
+                  <tr>
+                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Email:</td>
+                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${email}</td>
+                  </tr>
+                  <tr>
+                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Phone Number:</td>
+                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${phoneNumber}</td>
+                  </tr>
+                  <tr>
+                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Visit Date:</td>
+                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${formattedVisitDate || 'N/A'}</td>
+                  </tr>
+                  <tr>
+                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Visit Time:</td>
+                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${formattedVisitTime || 'N/A'}</td>
+                  </tr>
+                  <tr>
+                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Property Name:</td>
+                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${propertyName}</td>
+                  </tr>
+                  <tr>
+                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Location Details:</td>
+                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${locationDetails}</td>
+                  </tr>
+                  <tr>
+                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Description:</td>
+                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${description}</td>
+                  </tr>
+                  <tr>
+                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Property ID:</td>
+                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${property_id}</td>
+                  </tr>
+              </table>
+          </div>
+      `
+  };
+  
+    await transporter.sendMail(mailOptions);
+
       res.status(201).send('Visit scheduled');
   } catch (err) {
       console.error(err);
@@ -879,59 +941,82 @@ app.post('/sendEmail', async (req, res) => {
   const { fname, lname, phone, email, message } = req.body;
 
   try {
-      const transporter = nodemailer.createTransport({
-          service: 'gmail', 
-          auth: {
-              user: "todolistemailofficial@gmail.com", 
-              pass: "urmb ilpc szxo kyjv" 
-          }
-      });
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.hostinger.com', 
+      port: 465, 
+      secure: true, 
+      auth: {
+        user: 'dilna@bhoomikarealestate.com', 
+        pass: 'Bhoomika@2024' 
+      }
+    });
 
      
-     const mailOptions = {
-      from: `"${fname} ${lname}" <${email}>`,
+    const mailOptions = {
+      from: '"Bhoomika Real Estate Website" <dilna@bhoomikarealestate.com>',
       to: 'dilna@bhoomikarealestate.com', 
-      subject: 'New Message from Portfolio Contact Form', 
+      subject: 'New Message from Bhoomika Contact Form', 
       html: `
           <html>
           <head>
               <style>
-                  /* Add CSS styles here if needed */
                   body {
                       font-family: Arial, sans-serif;
                       line-height: 1.6;
+                      background-color: #f4f4f4;
+                      padding: 20px;
                   }
                   .container {
                       max-width: 600px;
                       margin: 0 auto;
                       padding: 20px;
-                      border: 1px solid #ccc;
+                      border: 1px solid #ddd;
+                      border-radius: 10px;
+                      background-color: #fff;
+                      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+                  }
+                  h2 {
+                      background-color: #4CAF50;
+                      color: white;
+                      padding: 10px;
                       border-radius: 5px;
-                      background-color: #f9f9f9;
+                      text-align: center;
                   }
                   .message {
                       margin-top: 20px;
-                      padding: 10px;
-                      background-color: #fff;
+                      padding: 15px;
+                      background-color: #f9f9f9;
                       border: 1px solid #ddd;
                       border-radius: 5px;
+                  }
+                  p {
+                      margin: 10px 0;
+                  }
+                  .footer {
+                      margin-top: 20px;
+                      font-size: 0.9em;
+                      color: #555;
                   }
               </style>
           </head>
           <body>
               <div class="container">
-                  <h2>Hello,</h2>
-                  <p>My name is ${fname} ${lname}. Below is my message:</p>
+                  <h2>New Message from Contact Form</h2>
+                  <p>Hello,</p>
+                  <p>My name is <strong>${fname} ${lname}</strong>. Below is my message:</p>
                   <div class="message">
                       <p>${message}</p>
                   </div>
                   <p><strong>Email:</strong> ${email}</p>
-                  <p>Best regards,<br/>${fname} ${lname}</p>
+                  <div class="footer">
+                      <p>Best regards,<br/>${fname} ${lname}</p>
+                  </div>
               </div>
           </body>
           </html>
       `
   };
+  
 
   const info = await transporter.sendMail(mailOptions);
   console.log('Email sent:', info.response);
