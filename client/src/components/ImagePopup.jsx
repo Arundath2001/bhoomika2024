@@ -1,10 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './ImagePopup.css';
 
 const ImagePopup = ({ images, currentImageIndex, onClose, onPrevious, onNext }) => {
   if (!images || images.length === 0) return null;
 
   const baseURL = 'https://api.bhoomikarealestate.com/';
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
 
   return (
     <div className="imagepopup">

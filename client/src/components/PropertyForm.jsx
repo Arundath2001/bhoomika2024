@@ -453,7 +453,7 @@ const handleRemoveImage = (index) => {
             onChange={(value) => setPlotSize(value)}
           />
           <InputDrop
-            type="number"
+            type="text"
             label={propertyType === 'Land' || propertyType === 'Farm Land' 
               ? `Budget per ${
                   plotSize.unit === 'Cent'

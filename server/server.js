@@ -632,7 +632,7 @@ app.get('/enquiries', async (req, res) => {
 });
 
 app.post('/schedule-visit', async (req, res) => {
-  const { fullName, email, phoneNumber, visitDate, visitTime, visitTimePeriod, propertyName, locationDetails } = req.body;
+  const { fullName, email, phoneNumber, visitDate, visitTime, visitTimePeriod, propertyName, locationDetails, description, property_id } = req.body;
 
   console.log({
       fullName,
@@ -642,7 +642,9 @@ app.post('/schedule-visit', async (req, res) => {
       visitTime,
       visitTimePeriod,
       propertyName,
-      locationDetails
+      locationDetails,
+      description,
+      property_id
   });
 
   const formattedVisitDate = visitDate && visitDate.trim() !== '' ? visitDate : null;
@@ -653,8 +655,8 @@ app.post('/schedule-visit', async (req, res) => {
 
   try {
       await pool.query(
-          'INSERT INTO visit_schedules (fullname, email, phone_number, visit_date, visit_time, property_name, location_details) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-          [fullName, email, phoneNumber, formattedVisitDate, formattedVisitTime, propertyName, locationDetails]
+          'INSERT INTO visit_schedules (fullname, email, phone_number, visit_date, visit_time, property_name, location_details, description, property_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+          [fullName, email, phoneNumber, formattedVisitDate, formattedVisitTime, propertyName, locationDetails, description, property_id]
       );
       res.status(201).send('Visit scheduled');
   } catch (err) {

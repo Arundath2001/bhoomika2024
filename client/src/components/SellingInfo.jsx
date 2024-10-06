@@ -129,7 +129,7 @@ function SellingInfo({ setSelectedIds, dataChanged, searchQuery }) {
                                         <td>{handleEmptyField(info.plotsize)}</td>
                                         <td>{handleEmptyField(info.budget)}</td>
                                         <td>{formatDate(info.updateddate)}</td>
-                                        <td>{handleEmptyField(info.description)}</td> 
+                                        <td className="table_description">{handleEmptyField(info.description)}</td> 
                                         <td className="table_images">
                                             {imageUrls.length > 0 ? (
                                                 <div className="image-gallery">

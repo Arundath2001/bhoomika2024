@@ -9,7 +9,7 @@ import PopupForm3 from './PopupForm3';
 import ImagePopup from './ImagePopup';
 
 const PropertyCard = ({ 
-  propertyname, imageurls, numofbedrooms, plotsize, locationdetails, propertyType, name, location, ratePerCent, price, beds, baths, numoftoilets, budget, description, rentaltype, commercialtype, numofrooms, villarooms 
+  propertyname, imageurls, numofbedrooms, plotsize, locationdetails, propertyType, name, location, ratePerCent, price, beds, baths, numoftoilets, budget, description, rentaltype, commercialtype, numofrooms, villarooms, id 
 }) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isImagePopupVisible, setIsImagePopupVisible] = useState(false);
@@ -193,6 +193,8 @@ const PropertyCard = ({
             propertyDetails={{
               propertyName: displayName(),
               locationDetails: locationdetails,
+              description:description,
+              property_id:id
             }}
           />
         </div>

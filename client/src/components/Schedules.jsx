@@ -38,10 +38,10 @@ function Schedules({ setSelectedIds, dataChanged, searchQuery }) {
     };
 
     const filteredSchedules = schedules.filter(schedule => {
-        const fullname = schedule.fullname?.toLowerCase() || '';
+        const location_details = schedule.location_details?.toLowerCase() || '';
         const query = searchQuery.toLowerCase();
 
-        return fullname.includes(query);
+        return location_details.includes(query);
     });
 
     return (
@@ -55,11 +55,13 @@ function Schedules({ setSelectedIds, dataChanged, searchQuery }) {
                         <th>Select</th>
                         <th>Visit Date</th>
                         <th>Full Name</th>
-                        <th>Email</th>
+                        <th>Location Details</th>
+                        <th>Property Id</th>
+                        <th>Description</th>
                         <th>Phone Number</th>
                         <th>Visit Time</th>
                         <th>Property Name</th>
-                        <th>Location Details</th>
+                        <th>Email</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,11 +76,13 @@ function Schedules({ setSelectedIds, dataChanged, searchQuery }) {
                             </td>
                             <td>{formatDate(schedule.visit_date)}</td>
                             <td>{schedule.fullname}</td>
-                            <td>{schedule.email}</td>
+                            <td>{schedule.location_details}</td>
+                            <td>{schedule.property_id}</td>
+                            <td>{schedule.description}</td>
                             <td>{schedule.phone_number}</td>
                             <td>{schedule.visit_time}</td>
                             <td>{schedule.property_name}</td>
-                            <td>{schedule.location_details}</td>
+                            <td>{schedule.email}</td>
                         </tr>
                     ))}
                 </tbody>

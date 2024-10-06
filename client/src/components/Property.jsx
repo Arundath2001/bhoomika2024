@@ -61,10 +61,12 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
     const filteredProperties = properties.filter(property => {
         const propertyName = property.propertyname?.toLowerCase() || '';
         const fullName = property.fullname?.toLowerCase() || '';
+        const id = String(property.id).toLowerCase(); 
         const query = searchQuery.toLowerCase();
-
-        return propertyName.includes(query) || fullName.includes(query);
+    
+        return propertyName.includes(query) || fullName.includes(query) || id.includes(query);
     });
+    
 
     const selectedProperty = properties.find(p => selectedIds.includes(p.id));
 
@@ -99,6 +101,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
                             <thead>
                                 <tr>
                                     <th>Select</th>
+                                    <th>Propert Id</th>
                                     <th>Property Type</th>
                                     <th>Property Holder Name</th>
                                     <th>Phone Number</th>
@@ -112,7 +115,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
                                     <th>Location Details</th>
                                     <th>Size of Plot</th>
                                     <th>Budget</th>
-                                    <th>Description</th> 
+                                    <th className="table_description">Description</th> 
                                     <th>Images</th> 
                                 </tr>
                             </thead>
@@ -126,6 +129,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
                                                 onChange={() => handleCheckboxChange(property.id)}
                                             />
                                         </td>
+                                        <td>{property.id || 'N/A'}</td>
                                         <td>{property.propertytype || 'N/A'}</td>
                                         <td>{property.fullname || 'N/A'}</td>
                                         <td>{property.phonenumber || 'N/A'}</td>
@@ -139,7 +143,7 @@ function Property({ isFormOpen, formMode, setIsFormOpen, selectedIds, setSelecte
                                         <td>{property.locationdetails || 'N/A'}</td>
                                         <td>{property.plotsize || 'N/A'}</td>
                                         <td>{property.budget || 'N/A'}</td>
-                                        <td>{property.description || 'N/A'}</td> 
+                                        <td className="table_description">{property.description || 'N/A'}</td> 
                                         <td className="table_images">
                                             {property.imageurls && property.imageurls.length > 0 ? (
                                                 property.imageurls.map((url, index) => (

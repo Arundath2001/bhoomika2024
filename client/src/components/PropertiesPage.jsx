@@ -112,6 +112,7 @@ function PropertiesPage() {
                 numoftoilets={property.numoftoilets}
                 description={property.description}
                 villarooms={property.villa_rooms}
+                id={property.id}
               />
             ))
           ) : (

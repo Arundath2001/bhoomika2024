@@ -23,6 +23,11 @@ function TopNavbar({ activeTab, setFormMode, setIsFormOpen, selectedIds, setSele
         "Schedules": "Total No of Schedules",
     };
 
+    const searchPlaceholders = {
+        "Property": "Search by Name or ID",
+        "Schedules": "Search by Location",
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
@@ -142,7 +147,7 @@ function TopNavbar({ activeTab, setFormMode, setIsFormOpen, selectedIds, setSele
             </div>
             <div className="topnavbar_fields">
                 <SearchField 
-                    placeholder="Search by Name" 
+                    placeholder={searchPlaceholders[activeTab] || "Search by Name"}
                     onSearch={setSearchQuery} 
                 />
                 <div className="topnavbar_btns">

@@ -38,8 +38,11 @@ function PopupForm3({ onClose, propertyDetails }) {
                 visitTime,
                 visitTimePeriod, 
                 propertyName: propertyDetails.propertyName,
-                locationDetails: propertyDetails.locationDetails
+                locationDetails: propertyDetails.locationDetails,
+                description: propertyDetails.description,
+                property_id: propertyDetails.property_id
             });
+            
             setAlert({ isVisible: true, message: 'Visit scheduled successfully!', isError: false });
             setTimeout(() => {
                 onClose(); 

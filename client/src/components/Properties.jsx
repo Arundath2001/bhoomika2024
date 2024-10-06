@@ -29,6 +29,7 @@ function Properties() {
   if (loading) return <AlertBox text='Loading...' />;
 
   if (error) return <p>{error}</p>;
+  
 
   const filteredProperties = properties.filter(property => 
     (selectedType === "All Properties" || property.propertytype === selectedType) &&
@@ -69,6 +70,7 @@ function Properties() {
                 numoftoilets={property.numoftoilets}
                 description={property.description}
                 villarooms={property.villa_rooms}
+                id={property.id}
               />
             ))
           ) : (
