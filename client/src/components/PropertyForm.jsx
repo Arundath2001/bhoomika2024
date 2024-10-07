@@ -27,7 +27,8 @@ function PropertyForm({
   setRequired,
   showPropertyName,
   showContactMessage,
-  setName
+  setName,
+  BudgetRequired
 }) {
   const [propertyType, setPropertyType] = useState("");
   const [fullName, setFullName] = useState("");
@@ -141,7 +142,7 @@ const handleRemoveImage = (index) => {
       !isFieldValid(phoneNumber, true) ||
       !isFieldValid(locationDetails, setRequired) ||
       !isFieldValid(plotSize.input, setRequired) ||
-      !isFieldValid(budget.input, setRequired)
+      (!isFieldValid(budget.input, BudgetRequired || setRequired))
     ) {
       setAlertMessage({
         isVisible: true,
@@ -463,7 +464,7 @@ const handleRemoveImage = (index) => {
                     : 'Sq ft'
                 }`
               : 'Budget'}
-            required={setRequired ? true : false}
+              required={BudgetRequired || setRequired}
             value={budget}
             onChange={(value) => setBudget(value)}
           />

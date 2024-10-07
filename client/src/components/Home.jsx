@@ -23,6 +23,7 @@ function Home() {
     const [isPopupVisible2, SetPopupVisible2] = useState(false);
     const [formUrl, setFormUrl] = useState(''); 
     const [heading , setHeading] = useState('');
+    const [budgetRequire , setBudgetRequire] = useState(false);
 
     const propertiesRef = useRef(null);
     const citiesRef = useRef(null);
@@ -49,7 +50,8 @@ function Home() {
             <>
                 Explore Land Options: Share Your<br />Requirements Today!
             </>
-        );    
+        );
+        setBudgetRequire(true);
     };
 
     const handleClosePopup = () => {
@@ -120,7 +122,7 @@ function Home() {
                         onClick={handleOpenPopup2}
                         bgColor="buttonmain_black"
                         textColor="buttonmain_whitetxt"
-                        value="Enquiry"
+                        value="Send Your Requirements"
                         img={enquiry}
                     />
                 </div>
@@ -158,7 +160,8 @@ function Home() {
                         showImageUpload={isPopupVisible1}
                         showPropertyName={isPopupVisible1}
                         heading={heading}
-                        showContactMessage={true} 
+                        showContactMessage={true}
+                        BudgetRequired={budgetRequire} 
                     />
                 </div>
             )}

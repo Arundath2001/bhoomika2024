@@ -75,7 +75,7 @@ function PopupForm3({ onClose, propertyDetails }) {
             <form className="popupform3_fields" onSubmit={handleSubmit}>
                 <div className="popupform3_row1">
                     <InputNormal type="text" label="Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
-                    <InputNormal type="email" label="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    <InputNormal type="email" label="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <PhoneInput type="number" label="Phone Number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
                 <div className="popupform3_row2">
