@@ -22,6 +22,7 @@ function DateInput({ label, id, required = false, onChange }) {
                     onChange={handleDateChange}
                     id={id}
                     className="dateinput_date"
+                    minDate={new Date(2024, 0, 1)}
                 />
                 <img src={date} alt="date_img" />
             </div>

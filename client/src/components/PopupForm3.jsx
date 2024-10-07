@@ -79,9 +79,9 @@ function PopupForm3({ onClose, propertyDetails }) {
                 </div>
                 <PhoneInput type="number" label="Phone Number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
                 <div className="popupform3_row2">
-                    <DateInput label="Date" value={visitDate} onChange={setVisitDate} required />
+                    <DateInput label="Visit Date" value={visitDate} onChange={setVisitDate} required />
                     <TimeInput 
-    label="Time" 
+    label="Visit Time" 
     value={visitTime} 
     onChange={setVisitTime} 
     period={visitTimePeriod} 
