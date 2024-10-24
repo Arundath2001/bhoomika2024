@@ -648,10 +648,21 @@ app.post('/schedule-visit', async (req, res) => {
   });
 
   const formattedVisitDate = visitDate && visitDate.trim() !== '' ? visitDate : null;
-  
-  const formattedVisitTime = visitTime && visitTime.trim() !== '' 
-      ? `${visitTime} ${visitTimePeriod}` 
-      : null;
+
+  let formattedVisitTime = null;
+  if (visitTime && visitTime.trim() !== '') {
+      let [hours, minutes] = visitTime.split(':');
+      hours = parseInt(hours, 10);
+      let period = visitTimePeriod;
+
+      if (hours > 12) {
+          hours -= 12;
+      } else if (hours === 0) {
+          hours = 12;
+      }
+      
+      formattedVisitTime = `${hours.toString().padStart(2, '0')}:${minutes} ${period}`;
+  }
 
   try {
       await pool.query(
@@ -660,65 +671,65 @@ app.post('/schedule-visit', async (req, res) => {
       );
 
       const transporter = nodemailer.createTransport({
-        host: 'smtp.hostinger.com', 
-        port: 465,
-        secure: true, 
-        auth: {
-            user: 'dilna@bhoomikarealestate.com', 
-            pass: 'Bhoomika@2024' 
-        }
-    });
+          host: 'smtp.hostinger.com',
+          port: 465,
+          secure: true,
+          auth: {
+              user: 'dilna@bhoomikarealestate.com',
+              pass: 'Bhoomika@2024'
+          }
+      });
 
-    const mailOptions = {
-      from: '"Bhoomika Real Estate Website" <dilna@bhoomikarealestate.com>', 
-      to: 'dilna@bhoomikarealestate.com', 
-      subject: 'New Visit Scheduled',
-      html: `
-          <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
-              <h3 style="background-color: #4CAF50; color: white; padding: 10px 15px; text-align: center; border-radius: 5px;">New Visit Scheduled</h3>
-              <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-                  <tr>
-                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Full Name:</td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${fullName}</td>
-                  </tr>
-                  <tr>
-                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Email:</td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${email}</td>
-                  </tr>
-                  <tr>
-                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Phone Number:</td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${phoneNumber}</td>
-                  </tr>
-                  <tr>
-                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Visit Date:</td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${formattedVisitDate || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Visit Time:</td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${formattedVisitTime || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Property Name:</td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${propertyName}</td>
-                  </tr>
-                  <tr>
-                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Location Details:</td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${locationDetails}</td>
-                  </tr>
-                  <tr>
-                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Description:</td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${description}</td>
-                  </tr>
-                  <tr>
-                      <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Property ID:</td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${property_id}</td>
-                  </tr>
-              </table>
-          </div>
-      `
-  };
-  
-    await transporter.sendMail(mailOptions);
+      const mailOptions = {
+          from: '"Bhoomika Real Estate Website" <dilna@bhoomikarealestate.com>',
+          to: 'dilna@bhoomikarealestate.com',
+          subject: 'New Visit Scheduled',
+          html: `
+              <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
+                  <h3 style="background-color: #4CAF50; color: white; padding: 10px 15px; text-align: center; border-radius: 5px;">New Visit Scheduled</h3>
+                  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                      <tr>
+                          <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Full Name:</td>
+                          <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${fullName}</td>
+                      </tr>
+                      <tr>
+                          <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Email:</td>
+                          <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${email}</td>
+                      </tr>
+                      <tr>
+                          <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Phone Number:</td>
+                          <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${phoneNumber}</td>
+                      </tr>
+                      <tr>
+                          <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Visit Date:</td>
+                          <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${formattedVisitDate || 'N/A'}</td>
+                      </tr>
+                      <tr>
+                          <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Visit Time:</td>
+                          <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${formattedVisitTime || 'N/A'}</td>
+                      </tr>
+                      <tr>
+                          <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Property Name:</td>
+                          <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${propertyName}</td>
+                      </tr>
+                      <tr>
+                          <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Location Details:</td>
+                          <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${locationDetails}</td>
+                      </tr>
+                      <tr>
+                          <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Description:</td>
+                          <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${description}</td>
+                      </tr>
+                      <tr>
+                          <td style="font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ddd;">Property ID:</td>
+                          <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${property_id}</td>
+                      </tr>
+                  </table>
+              </div>
+          `
+      };
+
+      await transporter.sendMail(mailOptions);
 
       res.status(201).send('Visit scheduled');
   } catch (err) {
@@ -726,6 +737,7 @@ app.post('/schedule-visit', async (req, res) => {
       res.status(500).send('Server error');
   }
 });
+
 
 
 app.get('/schedules', async (req, res) => {
