@@ -69,7 +69,7 @@ const PropertyCard = ({
     if(propertyType == 'Land' || propertyType == 'Farm'){
       if (plotsize.toLowerCase().includes('sq')) return 'Rate per sq ft';
     
-      if (plotsize.toLowerCase().includes('acre')) return 'Rate per acre';
+      if (plotsize.toLowerCase().includes('acre')) return 'Rate per cent';
       
       if (plotsize.toLowerCase().includes('cent')) return 'Rate per cent';
       
