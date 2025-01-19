@@ -1039,6 +1039,59 @@ app.post('/sendEmail', async (req, res) => {
 }
 });
 
+app.get('/paginated-cities', async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
+    const result = await pool.query(
+      'SELECT * FROM cities ORDER BY updateddate DESC LIMIT $1 OFFSET $2',
+      [limit, offset]
+    );
+
+    const totalResult = await pool.query('SELECT COUNT(*) FROM cities');
+    const total = parseInt(totalResult.rows[0].count);
+
+    res.json({
+      cities: result.rows,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
+app.get('/paginated-properties', async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
+    const result = await pool.query(
+      'SELECT * FROM properties ORDER BY updateddate DESC LIMIT $1 OFFSET $2',
+      [limit, offset]
+    );
+
+    const totalResult = await pool.query('SELECT COUNT(*) FROM properties');
+    const total = parseInt(totalResult.rows[0].count);
+
+    res.json({
+      properties: result.rows,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
