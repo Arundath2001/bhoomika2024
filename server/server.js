@@ -653,7 +653,7 @@ app.post('/schedule-visit', async (req, res) => {
   if (visitTime && visitTime.trim() !== '') {
       let [hours, minutes] = visitTime.split(':');
       hours = parseInt(hours, 10);
-      let period = visitTimePeriod;
+      let period = visitTimePeriod || '';
 
       if (hours > 12) {
           hours -= 12;
