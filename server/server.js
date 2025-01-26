@@ -1074,30 +1074,38 @@ app.get('/paginated-properties', async (req, res) => {
     const propertyType = req.query.propertyType ? req.query.propertyType.trim() : ''; 
 
     let queryText = 'SELECT * FROM properties';
-    let queryParams = [limit, offset];
+    let queryParams = [];
+    let conditions = [];
 
+    // Add search query condition
     if (searchQuery) {
-      queryText += ' WHERE LOWER(locationdetails) LIKE $3'; 
+      conditions.push('LOWER(locationdetails) LIKE $' + (queryParams.length + 1));
       queryParams.push(`%${searchQuery}%`);
     }
 
+    // Add property type condition
     if (propertyType) {
-      queryText += searchQuery ? ' AND propertytype = $' + (queryParams.length + 1) : ' WHERE propertytype = $' + (queryParams.length + 1);
+      conditions.push('propertytype = $' + (queryParams.length + 1));
       queryParams.push(propertyType);
     }
 
-    queryText += ' ORDER BY updateddate DESC LIMIT $1 OFFSET $2';
+    // Combine conditions
+    if (conditions.length > 0) {
+      queryText += ' WHERE ' + conditions.join(' AND ');
+    }
+
+    queryText += ' ORDER BY updateddate DESC LIMIT $' + (queryParams.length + 1) + ' OFFSET $' + (queryParams.length + 2);
+    queryParams.push(limit, offset);
 
     const result = await pool.query(queryText, queryParams);
 
+    // Count total matching rows
     let countQuery = 'SELECT COUNT(*) FROM properties';
-    let countParams = searchQuery ? [`%${searchQuery}%`] : [];
-    if (propertyType) {
-      countQuery += searchQuery ? ' AND propertytype = $' + (countParams.length + 1) : ' WHERE propertytype = $' + (countParams.length + 1);
-      countParams.push(propertyType);
+    if (conditions.length > 0) {
+      countQuery += ' WHERE ' + conditions.join(' AND ');
     }
 
-    const totalResult = await pool.query(countQuery, countParams);
+    const totalResult = await pool.query(countQuery, queryParams.slice(0, queryParams.length - 2));
     const total = parseInt(totalResult.rows[0].count);
 
     res.json({
@@ -1107,7 +1115,7 @@ app.get('/paginated-properties', async (req, res) => {
       totalPages: Math.ceil(total / limit),
     });
   } catch (err) {
-    console.error(err);
+    console.error('Server Error:', err);
     res.status(500).send('Server error');
   }
 });
