@@ -146,8 +146,8 @@ app.put('/cities/:id', upload.single('file'), async (req, res) => {
     const values = [cityName, availableProperties];
 
     if (file) {
-      // Construct the public URL for the uploaded file
-      const publicUrl = `https://api.bhoomikarealestate.com/uploads/cities/${file.filename}`;
+      // Construct the correct public URL for the uploaded file
+      const publicUrl = `/uploads/cities/${file.filename}`;
       updateQuery += ', imageUrl = $3';
       values.push(publicUrl);
     }
