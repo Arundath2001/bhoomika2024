@@ -147,7 +147,7 @@ app.put('/cities/:id', upload.single('file'), async (req, res) => {
 
     if (file) {
       // Construct the correct public URL for the uploaded file
-      const publicUrl = `/uploads/cities/${file.filename}`;
+      const publicUrl = `uploads/cities/${file.filename}`;
       updateQuery += ', imageUrl = $3';
       values.push(publicUrl);
     }
