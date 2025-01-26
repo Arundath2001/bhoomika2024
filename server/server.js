@@ -1070,13 +1070,25 @@ app.get('/paginated-properties', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
+    const searchQuery = req.query.search ? req.query.search.trim().toLowerCase() : '';
 
-    const result = await pool.query(
-      'SELECT * FROM properties ORDER BY updateddate DESC LIMIT $1 OFFSET $2',
-      [limit, offset]
-    );
+    let queryText = 'SELECT * FROM properties';
+    let queryParams = [limit, offset];
 
-    const totalResult = await pool.query('SELECT COUNT(*) FROM properties');
+    if (searchQuery) {
+      queryText += ' WHERE LOWER(locationdetails) LIKE $3'; 
+      queryParams.push(`%${searchQuery}%`); 
+    }
+
+    queryText += ' ORDER BY updateddate DESC LIMIT $1 OFFSET $2';
+
+    const result = await pool.query(queryText, queryParams);
+
+    let countQuery = 'SELECT COUNT(*) FROM properties';
+    if (searchQuery) {
+      countQuery += ' WHERE LOWER(locationdetails) LIKE $1';
+    }
+    const totalResult = await pool.query(countQuery, searchQuery ? [`%${searchQuery}%`] : []);
     const total = parseInt(totalResult.rows[0].count);
 
     res.json({
@@ -1090,6 +1102,7 @@ app.get('/paginated-properties', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
 
 
 
