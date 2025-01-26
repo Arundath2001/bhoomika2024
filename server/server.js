@@ -81,15 +81,17 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-app.put('/cities/:id', upload.single('file'), async (req, res) => {
-  const { id } = req.params;
+app.post('/cities', upload.single('file'), async (req, res) => {
   const { cityName } = req.body;
   const file = req.file;
 
-  console.log(req.body);
+  if (!file) {
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
 
   try {
-    // Get the count of properties matching the city name
+    const imageUrl = path.join('uploads', 'cities', file.filename);
+
     const countResult = await pool.query(
       `SELECT COUNT(*) FROM properties 
        WHERE locationDetails ILIKE $1
@@ -99,24 +101,12 @@ app.put('/cities/:id', upload.single('file'), async (req, res) => {
 
     const availableProperties = parseInt(countResult.rows[0].count, 10);
 
-    // Base query and values
-    let updateQuery = 'UPDATE cities SET cityName = $1, availableProperties = $2';
-    const values = [cityName, availableProperties];
+    await pool.query(
+      'INSERT INTO cities (cityName, availableProperties, imageUrl) VALUES ($1, $2, $3)',
+      [cityName, availableProperties, imageUrl]
+    );
 
-    if (file) {
-      // Generate the public URL for the uploaded file
-      const publicUrl = `https://api.bhoomikarealestate.com/uploads/cities/${file.filename}`;
-      updateQuery += ', imageUrl = $3';
-      values.push(publicUrl);
-    }
-
-    updateQuery += ' WHERE id = $' + (file ? '4' : '3');
-    values.push(id);
-
-    // Execute the query
-    await pool.query(updateQuery, values);
-
-    res.send('City updated and property count recalculated');
+    res.status(201).send('City added');
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
@@ -135,13 +125,13 @@ app.get('/cities', async (req, res) => {
 
 app.put('/cities/:id', upload.single('file'), async (req, res) => {
   const { id } = req.params;
-  const { cityName } = req.body; 
+  const { cityName } = req.body;
   const file = req.file;
-  
+
   console.log(req.body);
-  
 
   try {
+    // Query to count matching properties
     const countResult = await pool.query(
       `SELECT COUNT(*) FROM properties 
        WHERE locationDetails ILIKE $1
@@ -151,18 +141,21 @@ app.put('/cities/:id', upload.single('file'), async (req, res) => {
 
     const availableProperties = parseInt(countResult.rows[0].count, 10);
 
+    // Base update query and values
     let updateQuery = 'UPDATE cities SET cityName = $1, availableProperties = $2';
     const values = [cityName, availableProperties];
 
     if (file) {
-      const imageUrl = file.path;
+      // Construct the public URL for the uploaded file
+      const publicUrl = `https://api.bhoomikarealestate.com/uploads/cities/${file.filename}`;
       updateQuery += ', imageUrl = $3';
-      values.push(imageUrl);
+      values.push(publicUrl);
     }
 
     updateQuery += ' WHERE id = $' + (file ? '4' : '3');
     values.push(id);
 
+    // Execute the update query
     await pool.query(updateQuery, values);
     res.send('City updated and property count recalculated');
   } catch (err) {
