@@ -1071,13 +1071,19 @@ app.get('/paginated-properties', async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
     const searchQuery = req.query.search ? req.query.search.trim().toLowerCase() : '';
+    const propertyType = req.query.propertyType ? req.query.propertyType.trim() : ''; 
 
     let queryText = 'SELECT * FROM properties';
     let queryParams = [limit, offset];
 
     if (searchQuery) {
       queryText += ' WHERE LOWER(locationdetails) LIKE $3'; 
-      queryParams.push(`%${searchQuery}%`); 
+      queryParams.push(`%${searchQuery}%`);
+    }
+
+    if (propertyType) {
+      queryText += searchQuery ? ' AND propertytype = $' + (queryParams.length + 1) : ' WHERE propertytype = $' + (queryParams.length + 1);
+      queryParams.push(propertyType);
     }
 
     queryText += ' ORDER BY updateddate DESC LIMIT $1 OFFSET $2';
@@ -1085,10 +1091,13 @@ app.get('/paginated-properties', async (req, res) => {
     const result = await pool.query(queryText, queryParams);
 
     let countQuery = 'SELECT COUNT(*) FROM properties';
-    if (searchQuery) {
-      countQuery += ' WHERE LOWER(locationdetails) LIKE $1';
+    let countParams = searchQuery ? [`%${searchQuery}%`] : [];
+    if (propertyType) {
+      countQuery += searchQuery ? ' AND propertytype = $' + (countParams.length + 1) : ' WHERE propertytype = $' + (countParams.length + 1);
+      countParams.push(propertyType);
     }
-    const totalResult = await pool.query(countQuery, searchQuery ? [`%${searchQuery}%`] : []);
+
+    const totalResult = await pool.query(countQuery, countParams);
     const total = parseInt(totalResult.rows[0].count);
 
     res.json({
