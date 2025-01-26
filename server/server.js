@@ -1077,19 +1077,16 @@ app.get('/paginated-properties', async (req, res) => {
     let queryParams = [];
     let conditions = [];
 
-    // Add search query condition
     if (searchQuery) {
       conditions.push('LOWER(locationdetails) LIKE $' + (queryParams.length + 1));
       queryParams.push(`%${searchQuery}%`);
     }
 
-    // Add property type condition
     if (propertyType) {
       conditions.push('propertytype = $' + (queryParams.length + 1));
       queryParams.push(propertyType);
     }
 
-    // Combine conditions
     if (conditions.length > 0) {
       queryText += ' WHERE ' + conditions.join(' AND ');
     }
@@ -1099,7 +1096,6 @@ app.get('/paginated-properties', async (req, res) => {
 
     const result = await pool.query(queryText, queryParams);
 
-    // Count total matching rows
     let countQuery = 'SELECT COUNT(*) FROM properties';
     if (conditions.length > 0) {
       countQuery += ' WHERE ' + conditions.join(' AND ');
