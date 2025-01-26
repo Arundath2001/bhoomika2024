@@ -131,7 +131,6 @@ app.put('/cities/:id', upload.single('file'), async (req, res) => {
   console.log(req.body);
 
   try {
-    // Query to count matching properties
     const countResult = await pool.query(
       `SELECT COUNT(*) FROM properties 
        WHERE locationDetails ILIKE $1
@@ -141,12 +140,10 @@ app.put('/cities/:id', upload.single('file'), async (req, res) => {
 
     const availableProperties = parseInt(countResult.rows[0].count, 10);
 
-    // Base update query and values
     let updateQuery = 'UPDATE cities SET cityName = $1, availableProperties = $2';
     const values = [cityName, availableProperties];
 
     if (file) {
-      // Construct the correct public URL for the uploaded file
       const publicUrl = `uploads/cities/${file.filename}`;
       updateQuery += ', imageUrl = $3';
       values.push(publicUrl);
@@ -155,7 +152,6 @@ app.put('/cities/:id', upload.single('file'), async (req, res) => {
     updateQuery += ' WHERE id = $' + (file ? '4' : '3');
     values.push(id);
 
-    // Execute the update query
     await pool.query(updateQuery, values);
     res.send('City updated and property count recalculated');
   } catch (err) {
