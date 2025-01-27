@@ -1091,6 +1091,7 @@ app.get('/paginated-properties', async (req, res) => {
     const offset = (page - 1) * limit;
     const searchQuery = req.query.search ? req.query.search.trim().toLowerCase() : '';
     const propertyType = req.query.propertyType ? req.query.propertyType.trim() : ''; 
+    const cityName = req.query.city ? req.query.city.trim().toLowerCase() : ''; 
 
     let queryText = 'SELECT * FROM properties';
     let queryParams = [];
@@ -1104,6 +1105,11 @@ app.get('/paginated-properties', async (req, res) => {
     if (propertyType) {
       conditions.push('propertytype = $' + (queryParams.length + 1));
       queryParams.push(propertyType);
+    }
+
+    if (cityName) {
+      conditions.push('LOWER(locationdetails) ILIKE $' + (queryParams.length + 1) + ' OR LOWER(description) ILIKE $' + (queryParams.length + 2));
+      queryParams.push(`%${cityName}%`, `%${cityName}%`);
     }
 
     if (conditions.length > 0) {
@@ -1134,6 +1140,7 @@ app.get('/paginated-properties', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
 
 
 
