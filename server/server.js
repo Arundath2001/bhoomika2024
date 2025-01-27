@@ -1043,13 +1043,32 @@ app.get('/paginated-cities', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
+    const searchQuery = req.query.search ? req.query.search.trim().toLowerCase() : '';
 
-    const result = await pool.query(
-      'SELECT * FROM cities ORDER BY updateddate DESC LIMIT $1 OFFSET $2',
-      [limit, offset]
-    );
+    let queryText = 'SELECT * FROM cities';
+    let queryParams = [];
+    let conditions = [];
 
-    const totalResult = await pool.query('SELECT COUNT(*) FROM cities');
+    if (searchQuery) {
+      conditions.push('LOWER(cityname) LIKE $' + (queryParams.length + 1));
+      queryParams.push(`%${searchQuery}%`);
+    }
+
+    if (conditions.length > 0) {
+      queryText += ' WHERE ' + conditions.join(' AND ');
+    }
+
+    queryText += ' ORDER BY updateddate DESC LIMIT $' + (queryParams.length + 1) + ' OFFSET $' + (queryParams.length + 2);
+    queryParams.push(limit, offset);
+
+    const result = await pool.query(queryText, queryParams);
+
+    let countQuery = 'SELECT COUNT(*) FROM cities';
+    if (conditions.length > 0) {
+      countQuery += ' WHERE ' + conditions.join(' AND ');
+    }
+
+    const totalResult = await pool.query(countQuery, queryParams.slice(0, queryParams.length - 2));
     const total = parseInt(totalResult.rows[0].count);
 
     res.json({
@@ -1063,6 +1082,7 @@ app.get('/paginated-cities', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
 
 app.get('/paginated-properties', async (req, res) => {
   try {
