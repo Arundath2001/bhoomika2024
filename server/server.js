@@ -1097,41 +1097,33 @@ app.get('/paginated-properties', async (req, res) => {
     let queryParams = [];
     let conditions = [];
 
-    // Search query for location or description
     if (searchQuery) {
       conditions.push('(LOWER(locationdetails) LIKE $' + (queryParams.length + 1) + ' OR LOWER(description) LIKE $' + (queryParams.length + 2) + ')');
       queryParams.push(`%${searchQuery}%`, `%${searchQuery}%`);
     }
 
-    // Property Type filter, check if not 'All Properties'
     if (propertyType && propertyType !== 'All Properties') {
       conditions.push('LOWER(propertytype) = $' + (queryParams.length + 1));
       queryParams.push(propertyType.toLowerCase());
     }
 
-    // City name filter (in both locationdetails and description)
     if (cityName) {
       conditions.push('(LOWER(locationdetails) ILIKE $' + (queryParams.length + 1) + ' OR LOWER(description) ILIKE $' + (queryParams.length + 2) + ')');
       queryParams.push(`%${cityName}%`, `%${cityName}%`);
     }
 
-    // Add conditions to the query if applicable
     if (conditions.length > 0) {
       queryText += ' WHERE ' + conditions.join(' AND ');
     }
 
-    // Final query with pagination
     queryText += ' ORDER BY updateddate DESC LIMIT $' + (queryParams.length + 1) + ' OFFSET $' + (queryParams.length + 2);
     queryParams.push(limit, offset);
 
-    // Log the generated query for debugging
     console.log("Generated Query:", queryText);
     console.log("Query Parameters:", queryParams);
 
-    // Execute the query
     const result = await pool.query(queryText, queryParams);
 
-    // Counting total properties matching the conditions
     let countQuery = 'SELECT COUNT(*) FROM properties';
     if (conditions.length > 0) {
       countQuery += ' WHERE ' + conditions.join(' AND ');
