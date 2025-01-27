@@ -1102,10 +1102,11 @@ app.get('/paginated-properties', async (req, res) => {
       queryParams.push(`%${searchQuery}%`);
     }
 
-    if (propertyType) {
-      conditions.push('propertytype = $' + (queryParams.length + 1));
-      queryParams.push(propertyType);
+    if (propertyType && propertyType !== 'All Properties') {
+      conditions.push('LOWER(propertytype) = $' + (queryParams.length + 1));
+      queryParams.push(propertyType.toLowerCase());
     }
+    
 
     if (cityName) {
       conditions.push('LOWER(locationdetails) ILIKE $' + (queryParams.length + 1) + ' OR LOWER(description) ILIKE $' + (queryParams.length + 2));
