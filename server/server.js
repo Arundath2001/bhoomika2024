@@ -1089,10 +1089,9 @@ app.get('/paginated-properties', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
-    
     const searchQuery = req.query.search ? req.query.search.trim().toLowerCase() : '';
-    const propertyType = req.query.propertyType ? req.query.propertyType.trim() : ''; 
-    const cityName = req.query.city ? req.query.city.trim().toLowerCase() : ''; 
+    const propertyType = req.query.propertyType ? req.query.propertyType.trim() : '';
+    const cityName = req.query.city ? req.query.city.trim().toLowerCase() : '';
 
     let queryText = 'SELECT * FROM properties';
     let queryParams = [];
@@ -1100,11 +1099,11 @@ app.get('/paginated-properties', async (req, res) => {
 
     // Search query for location or description
     if (searchQuery) {
-      conditions.push('LOWER(locationdetails) LIKE $' + (queryParams.length + 1) + ' OR LOWER(description) LIKE $' + (queryParams.length + 2));
+      conditions.push('(LOWER(locationdetails) LIKE $' + (queryParams.length + 1) + ' OR LOWER(description) LIKE $' + (queryParams.length + 2) + ')');
       queryParams.push(`%${searchQuery}%`, `%${searchQuery}%`);
     }
 
-    // Property Type filter
+    // Property Type filter, check if not 'All Properties'
     if (propertyType && propertyType !== 'All Properties') {
       conditions.push('LOWER(propertytype) = $' + (queryParams.length + 1));
       queryParams.push(propertyType.toLowerCase());
@@ -1112,7 +1111,7 @@ app.get('/paginated-properties', async (req, res) => {
 
     // City name filter (in both locationdetails and description)
     if (cityName) {
-      conditions.push('LOWER(locationdetails) ILIKE $' + (queryParams.length + 1) + ' OR LOWER(description) ILIKE $' + (queryParams.length + 2));
+      conditions.push('(LOWER(locationdetails) ILIKE $' + (queryParams.length + 1) + ' OR LOWER(description) ILIKE $' + (queryParams.length + 2) + ')');
       queryParams.push(`%${cityName}%`, `%${cityName}%`);
     }
 
@@ -1125,6 +1124,11 @@ app.get('/paginated-properties', async (req, res) => {
     queryText += ' ORDER BY updateddate DESC LIMIT $' + (queryParams.length + 1) + ' OFFSET $' + (queryParams.length + 2);
     queryParams.push(limit, offset);
 
+    // Log the generated query for debugging
+    console.log("Generated Query:", queryText);
+    console.log("Query Parameters:", queryParams);
+
+    // Execute the query
     const result = await pool.query(queryText, queryParams);
 
     // Counting total properties matching the conditions
