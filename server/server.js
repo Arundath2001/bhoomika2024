@@ -1145,6 +1145,22 @@ app.get('/paginated-properties', async (req, res) => {
 });
 
 
+app.post('/api/save-token', async (req, res) => {
+  const { token } = req.body;
+  if (!token) {
+    return res.status(400).json({ error: 'Token is required' });
+  }
+
+  try {
+    const client = await pool.connect();
+    await client.query('INSERT INTO push_tokens (token) VALUES ($1) ON CONFLICT DO NOTHING', [token]);
+    client.release();
+    res.status(200).send('Token saved successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+});
 
 
 
