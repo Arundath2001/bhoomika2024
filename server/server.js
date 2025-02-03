@@ -9,6 +9,9 @@ const mkdirp = require('mkdirp');
 const fs = require('fs');
 require('dotenv').config();
 
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+
+
 const app = express();
 const allowedOrigins = ['https://www.bhoomikarealestate.com', 'https://bhoomikarealestate.com', 'http://localhost:5173'];
 
@@ -294,6 +297,28 @@ app.post('/properties', propertyUpload.array('files', 6), async (req, res) => {
     });
 
     await Promise.all(updatePromises);
+
+    const tokenResult = await client.query('SELECT token FROM push_tokens');
+    const tokens = tokenResult.rows.map(row => row.token);
+
+    const message = {
+      title: 'New Property Added!',
+      body: `Check out the new property: ${propertyName} in ${locationDetails}. Size: ${plotSize} sqft. Price: ${budget}.`,
+      data: {
+        propertyName,
+        locationDetails,
+        propertyType,
+        numOfBedRooms,
+        numOfRooms,
+        numOfToilets,
+        plotSize,
+        budget,
+        description,
+        imageUrls,
+      },
+    };
+
+    await sendPushNotification(tokens, message);
 
     await client.query('COMMIT');
     res.status(201).send('Property added and city counts updated');
@@ -1162,7 +1187,32 @@ app.post('/api/save-token', async (req, res) => {
   }
 });
 
+async function sendPushNotification(tokens, message) {
+  const messages = tokens.map(token => ({
+    to: token,
+    sound: 'default',
+    title: message.title,
+    body: message.body,
+    data: message.data,
+  }));
 
+  try {
+    const response = await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-Encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(messages),
+    });
+
+    const data = await response.json();
+    console.log('Notification Response:', data);
+  } catch (error) {
+    console.error('Error sending notification:', error);
+  }
+}
 
 
 const PORT = process.env.PORT || 5000;
